@@ -1,7 +1,7 @@
-  Terminal Helper
-  Version: 0.0.1
-  Author: Elijah Cowley
-  Website: http://epcit.biz
+  Terminal Helper		
+  Version: 0.0.1		
+  Author: Elijah Cowley		
+  Website: http://epcit.biz	
 
 This module is designed to allow both keypress and string event firing and includes some helper methods for terminal commands.
 Tested on Debian Linux, please contact ecowley@epcit.biz to report bugs using this modules.
@@ -12,13 +12,15 @@ Tested on Debian Linux, please contact ecowley@epcit.biz to report bugs using th
 
 Install this module using NPM or copy the package to your applications '/node_modules' directory.
 
+    npm install termhelper
+
   -----------------------------------------------------------------------------------------------
   
 ** Useage
 
-In your application files where you would like to use this module add the following line:
+In the application files you would like to use this module add the following line:
 
-    var term = require('termHelper')
+    var term = require('termhelper')
 
   -----------------------------------------------------------------------------------------------
   
