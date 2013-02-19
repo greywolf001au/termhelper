@@ -10,7 +10,7 @@
   "main": "termhelper.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/greywolf001au/termhelper.git"
+    "url": "git://github.com/greywolf001au/termHelper.git"
   },
   "keywords": [
     "keypress",
