@@ -18,7 +18,7 @@ Install this module using NPM or copy the package to your applications '/node_mo
 
 In your application files where you would like to use this module add the following line:
 
-	var term = require('termHelper')
+	var term = require('termhelper')
 
 
 
