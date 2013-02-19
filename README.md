@@ -1,9 +1,14 @@
-  Terminal Helper		
-  Version: 0.0.1		
-  Author: Elijah Cowley		
-  Website: http://epcit.biz	
+  Terminal Helper
+
+  Version: 0.0.1
+
+  Author: Elijah Cowley
+
+  Website: http://epcit.biz
 
 This module is designed to allow both keypress and string event firing and includes some helper methods for terminal commands.
+I have also included processing of arrow keys and backspace.
+
 Tested on Debian Linux, please contact ecowley@epcit.biz to report bugs using this modules.
 
   -----------------------------------------------------------------------------------------------
