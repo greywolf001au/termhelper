@@ -1,0 +1,26 @@
+{
+  "name": "termHelper",
+  "version": "0.0.1",
+  "description": "Allow processing of key press events and strings on enter key",
+  "author": {
+    "name": "Elijah Cowley",
+    "email": "ecowley@epcit.biz",
+    "url": "http://epcit.biz"
+  },
+  "main": "termHelper.js",
+  "repository": {
+    "type": "tarball",
+    "url": "http://epcit.biz/downloads/termHelper.tar.gz"
+  },
+  "keywords": [
+    "keypress",
+    "core"
+  ],
+  "license": "MIT"
+  , "private": false
+  , "dependencies": {
+      "express": "2.5.8"
+    , "keypress": ">= 0.1.0"
+    , "colors": "*"
+  }
+}
