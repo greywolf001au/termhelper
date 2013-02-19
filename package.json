@@ -9,11 +9,13 @@
   },
   "main": "termHelper.js",
   "repository": {
-    "type": "tarball",
-    "url": "http://epcit.biz/downloads/termHelper.tar.gz"
+    "type": "git",
+    "url": "git://github.com/greywolf001au/termHelper.git"
   },
   "keywords": [
     "keypress",
+    "line",
+    "process",
     "core"
   ],
   "license": "MIT"
@@ -21,6 +23,5 @@
   , "dependencies": {
       "express": "2.5.8"
     , "keypress": ">= 0.1.0"
-    , "colors": "*"
   }
 }
