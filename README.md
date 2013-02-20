@@ -1,6 +1,6 @@
   Terminal Helper
 
-  Version: 0.0.1
+  Version: 0.0.2
 
   Author: Elijah Cowley
 
@@ -33,18 +33,27 @@ In the application files you would like to use this module add the following lin
 
 Available Settings:
 
-    |  Setting   |  Default Value  |         Description        |
-     -----------------------------------------------------------
-      echoKeys          true        Outputs key on key stroke
-      prompt            '> '        Sets the prompt string
-      termHistory       true        Keep command history
-      allowKill         true        Allow CTRL + C to kill app
-      lineEnd           '\n'        Line end charater to use
+    |  Setting      |    Default Value    |               Description             |
+    -------------------------------------------------------------------------------
+      echoKeys          true                 Outputs key on key stroke
+      prompt            '> '                 Sets the prompt string
+      termHistory       true                 Keep command history
+      allowKill         true                 Allow CTRL + C to kill app
+      lineEnd           '\n'                 Line end charater to use
+      appendEndChar     true                 Append lineEnd character event data
+      debug             false                Outputs keystroke data
 
+Settings can be modified using in the following manner:
 
-Settings can be modified using the following lines:
+    term.set('prompt', 'node.js> ');
 
-    term.set('prompt', 'value');
+or
+    term.set({
+      prompt: 'node.js> ',
+      debug: true
+    });
+
+Note: To have no prompt displayed set the prompt to a blank string.
 
   -----------------------------------------------------------------------------------------------
 
@@ -66,6 +75,10 @@ Settings can be modified using the following lines:
 
 Events can be set for a single keypress and on line data using the following:
 
+    term.on('before_proc', function(ch, key) {
+      Add your code here....
+    }
+
     term.on('keypress', function(ch, key) {
       Add your code here....
     }
@@ -76,9 +89,12 @@ Events can be set for a single keypress and on line data using the following:
 
 Default key press processing can be bypassed by returning false from your event handler.
 Example:
-    term.on('keypress', function(ch, key) {
-      Add your code here....
-      if (data == somedata) return false;
+
+    term.on('before_proc', function(ch, key) {
+      if (ch == 's') {
+        Add your code here....
+        return false;
+      }
     }
 
 Note: bypassing command processing will cause all key press events to be bypassed including enter and CTRL+C, future versions will allow bypass of individual keystrokes
@@ -89,13 +105,15 @@ Note: bypassing command processing will cause all key press events to be bypasse
 
 Several methods have been added to make working in the terminal easier
 
-    Method        |     Useage      |                 Description                   |
-    ---------------------------------------------------------------------------------
-    Clear              term.Clear()             Clear terminal window
-    Prompt            term.Prompt()             Output prompt string
-    Write            term.Write(text)           Send text to terminal
+    Method        |      Useage         |   Description                                                                    |
+    ------------------------------------------------------------------------------------------------------------------------
+    Clear              term.Clear()         Clear terminal window
+    ClearLine        term.ClearLine()       Clear output from current line (clear prompt, does not clear input string)
+    Prompt            term.Prompt()         Output prompt string
+    Write            term.Write(text)       Send text to terminal
     Writeln         term.Writeln(text)      Send text to terminal with line end
-    CursorPos        term.CursorPos()     Returns an integer denoting cursor position
+    CursorPos        term.CursorPos()       Returns an integer denoting cursor position
+    CursorTo         term.CursorTo(pos)     Move the cursor to a specified position on the line
 
   -----------------------------------------------------------------------------------------------
 
@@ -103,19 +121,17 @@ Several methods have been added to make working in the terminal easier
 
 1) Bypassing events will be changed to allow selection of key events to bypass.
 
-2) Currently the default enter keystroke outputs '\r' which is overriden to output '\n', this will be changed to use the lineEnd setting.
+2) Make this a standalone module without requirement of keypress module.
 
-3) Make this a standalone module without requirement of keypress module.
+3) Basic code cleanup and bug fixes.
 
-4) Basic code cleanup and bug fixes.
-
-5) Possibly add string colouring and styles.
+4) Possibly add string colouring and styles.
 
   -----------------------------------------------------------------------------------------------
 
 ** Complimentary Modules
 
-Colors module will allow terminal colors and styles however this library extends the String prototype. While it works quite nicely it is not the preferable method.
+Colors module will allow terminal colors and styles however this library extends the String prototype. While it works quite nicely it is not the prefered method.
 
   -----------------------------------------------------------------------------------------------
 

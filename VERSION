@@ -1,0 +1,22 @@
+Terminal Helper Version Edits
+
+New To Version 0.0.2
+
+1. Added alowance for settings to contain an object containing key/value pairs.
+
+2. Renamed termHelper.lib.js to all lowercase to match the naming convention required by NPM.
+
+3. Edited code to stop deletion and moving cursor through the prompt.
+
+4. Enter key now appends line end character from settings.
+
+5. Added setting to append line end character to string passed to "on line" event.
+
+6. Added example.js file for testing termhelper.
+
+7. Moved keypress event trigger to occur after processing.
+
+8. Added 'before_proc' event to trigger before keypress processing occurs.
+
+
+

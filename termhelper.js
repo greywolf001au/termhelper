@@ -1,5 +1,5 @@
 var keypress = require('keypress')
-  , thlib = require('./termHelper.lib.js')
+  , thlib = require('./termhelper.lib.js')
 //  , colors = require('colors')
 
 
@@ -7,7 +7,8 @@ keypress(process.stdin);
 
 module.exports = {
   events: {
-    keypress: function(ch, key) {  },
+    before_proc: function(ch, key) {},
+    keypress: function(ch, key) {},
     line: function(data) {}
   },
 
@@ -15,10 +16,21 @@ module.exports = {
     this.events[event] = callback;
   },
   set: function(key, val) {
-    thlib.Settings[key] = val;
+    if (!val && key == 'prompt') val = '';
+    if (val) {
+      thlib.Settings[key] = val;
+    } else {
+      for (var x in key) {
+        thlib.Settings[x] = key[x];
+      }
+    }
   },
   Prompt: function() {
     thlib.Prompt();
+  },
+  CursorTo: function(pos) {
+    thlib.input.cursor_pos = pos;
+    process.stdout.cursorTo(pos);
   },
   CursorPos: function() {
     return thlib.input.cursor_pos;
@@ -27,9 +39,16 @@ module.exports = {
     process.stdout.write('\u001B[2J\u001B[0;0f');
     thlib.Prompt();
   },
+  ClearLine: function() {
+    process.stdout.clearLine();  // clear current text
+    thlib.input.cursor_pos = 0;
+  },
   Write: function(text) {
-    process.stdout.write(text);
+    thlib.input.string = thlib.input.string + text
+    this.CursorTo(0);
+    this.Prompt();
     thlib.input.cursor_pos += text.length;
+    process.stdout.write(thlib.input.string);
   },
   Writeln: function(text) {
     process.stdout.write(text + thlib.Settings.lineEnd);
@@ -40,16 +59,16 @@ var exports = module.exports;
 
 // listen for the "keypress" event
 process.stdin.on('keypress', function (ch, key) {
-  var conproc = exports.events.keypress(ch, key);
   if (thlib.Settings.debug == true) console.log(key);
 
+  var conproc = exports.before_proc(ch, key);
   if (conproc != false && key && key.name == 'enter') {
     thlib.input.string += ch;
     thlib.input.cursor_pos += 1;
     if (thlib.input.string.substr(thlib.input.string.length-1,1) == '\r') thlib.input.string = thlib.input.string.substr(0,thlib.input.string.length-1);
     if (thlib.Settings.debug == true) console.log(thlib.input.string);
-    thlib.input.string += '\n';
-    process.stdout.write('\n');
+    if (thlib.Settings.appendEndChar == true) thlib.input.string += thlib.Settings.lineEnd;
+    process.stdout.write(thlib.Settings.lineEnd);
     thlib.input.cursor_pos = 0;
     exports.events.line(thlib.input.string)
     if (thlib.Settings.termHistory == true) {
@@ -86,25 +105,26 @@ process.stdin.on('keypress', function (ch, key) {
       thlib.input.cursor_pos += thlib.input.string.length;
     }
   } else if (conproc != false && key && key.name == 'left') {
-    if (thlib.input.cursor_pos > 0) thlib.input.cursor_pos -= 1;
+    if (thlib.input.cursor_pos > thlib.Settings.prompt.length) thlib.input.cursor_pos -= 1;
     process.stdout.cursorTo(thlib.input.cursor_pos);
   } else if (conproc != false && key && key.name == 'right') {
     if (thlib.input.cursor_pos < (thlib.input.string.length + thlib.Settings.prompt.length)) thlib.input.cursor_pos += 1;
     process.stdout.cursorTo(thlib.input.cursor_pos);
   } else if (conproc != false && key && key.name == 'backspace') {
-    process.stdout.clearLine();  // clear current text
-    process.stdout.cursorTo(0);
-    thlib.input.cursor_pos -= thlib.Settings.prompt.length;
-    exports.Prompt();
-    var ostra = thlib.input.string.split('');
-    ostra.splice((thlib.input.cursor_pos-thlib.Settings.prompt.length)-1,1)
-    var newstr = ostra.join('')
-    thlib.input.string = newstr;
-    thlib.input.cursor_pos -= 1;
-    //if (thlib.Settings.echoKeys == true)
-      process.stdout.write(thlib.input.string);    
-    process.stdout.cursorTo(thlib.input.cursor_pos);
-    //console.log('{ ' + thlib.input.cursor_pos + ' }')
+    if (thlib.input.cursor_pos > thlib.Settings.prompt.length + 1) {
+      process.stdout.clearLine();  // clear current text
+      process.stdout.cursorTo(0);
+      thlib.input.cursor_pos -= thlib.Settings.prompt.length;
+      exports.Prompt();
+      var ostra = thlib.input.string.split('');
+      ostra.splice((thlib.input.cursor_pos-thlib.Settings.prompt.length)-1,1)
+      var newstr = ostra.join('')
+      thlib.input.string = newstr;
+      thlib.input.cursor_pos -= 1;
+      if (thlib.Settings.echoKeys == true)
+        process.stdout.write(thlib.input.string);    
+      process.stdout.cursorTo(thlib.input.cursor_pos);
+    }
   } else if (conproc != false && key && key.ctrl == true && key.name == 'c' && thlib.Settings.allowKill == true) {
     process.exit();
   } else if (conproc != false && ch) {
@@ -129,6 +149,7 @@ process.stdin.on('keypress', function (ch, key) {
       process.stdout.cursorTo(thlib.input.cursor_pos);
     }
   }
+  conproc = exports.events.keypress(ch, key);
 });
 
 process.stdin.setRawMode(true);
