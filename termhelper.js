@@ -61,7 +61,7 @@ var exports = module.exports;
 process.stdin.on('keypress', function (ch, key) {
   if (thlib.Settings.debug == true) console.log(key);
 
-  var conproc = exports.before_proc(ch, key);
+  var conproc = exports.events.before_proc(ch, key);
   if (conproc != false && key && key.name == 'enter') {
     thlib.input.string += ch;
     thlib.input.cursor_pos += 1;
