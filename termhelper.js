@@ -111,7 +111,7 @@ process.stdin.on('keypress', function (ch, key) {
     if (thlib.input.cursor_pos < (thlib.input.string.length + thlib.Settings.prompt.length)) thlib.input.cursor_pos += 1;
     process.stdout.cursorTo(thlib.input.cursor_pos);
   } else if (conproc != false && key && key.name == 'backspace') {
-    if (thlib.input.cursor_pos > thlib.Settings.prompt.length + 1) {
+    if (thlib.input.cursor_pos > thlib.Settings.prompt.length) {
       process.stdout.clearLine();  // clear current text
       process.stdout.cursorTo(0);
       thlib.input.cursor_pos -= thlib.Settings.prompt.length;
