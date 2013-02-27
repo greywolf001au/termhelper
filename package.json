@@ -21,7 +21,6 @@
   "license": "MIT"
   , "private": false
   , "dependencies": {
-      "express": "2.5.8"
     , "keypress": ">= 0.1.0"
   }
 }
