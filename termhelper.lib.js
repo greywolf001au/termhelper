@@ -8,9 +8,9 @@ module.exports = {
     appendEndChar: true,
     debug: false
   },
-  Prompt: function() {
+  Prompt: function () {
     process.stdout.write(this.Settings.prompt);
-    this.input.cursor_pos += this.Settings.prompt.length
+    this.input.cursor_pos += this.Settings.prompt.length;
   },
   input: {
     string: '',

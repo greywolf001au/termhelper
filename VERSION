@@ -1,9 +1,18 @@
 Terminal Helper Version Edits
 
+Version 0.0.4 Updates
+
+1. Parsed code using JSLint (http://www.jslint.com) and fixed all issues found.
+
+2. Fixed issue with input history deleting the last letter from commands
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 New To Version 0.0.3
 
 1. Fixed error on backspace command
 
+---------------------------------------------------------------------------------------------------------------------------------------------
 
 New To Version 0.0.2
 
@@ -22,6 +31,3 @@ New To Version 0.0.2
 7. Moved keypress event trigger to occur after processing.
 
 8. Added 'before_proc' event to trigger before keypress processing occurs.
-
-
-
