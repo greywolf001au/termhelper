@@ -67,7 +67,8 @@ Note: To have no prompt displayed set the prompt to a blank string.
         Down        Arrow Scroll forward through history
         Left        Arrow Move cursor back
         Right       Arrow Move cursor forward
-      Backspace     Delete last character typed
+      Backspace     Delete character behind cursor
+        Delete      Delete character infront of cursor
         Enter       Process line
         CTRL+C      Exit application
 

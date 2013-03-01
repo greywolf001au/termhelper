@@ -8,6 +8,8 @@ Version 0.0.5 Updates
 
 3. Added allowRun and runAlias settings for executing shell commands
 
+4. Added delete key processing
+
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
 Version 0.0.4 Updates
