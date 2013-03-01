@@ -6,7 +6,9 @@ module.exports = {
     allowKill: true,
     lineEnd: '\n',
     appendEndChar: true,
-    debug: false
+    debug: false,
+    allowRun: true,
+    runAlias: 'run'
   },
   Prompt: function () {
     process.stdout.write(this.Settings.prompt);

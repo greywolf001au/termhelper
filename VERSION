@@ -6,6 +6,8 @@ Version 0.0.5 Updates
 
 2. Removed keypress event override from example.js to allow commands such as 'ls' to be tested
 
+3. Added allowRun and runAlias settings for executing shell commands
+
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
 Version 0.0.4 Updates

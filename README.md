@@ -42,6 +42,8 @@ Available Settings:
       lineEnd           '\n'                 Line end charater to use
       appendEndChar     true                 Append lineEnd character event data
       debug             false                Outputs keystroke data
+      allowRun          true                 Allow running of shell commands
+      runAlias          'run'                Command to execute run method
 
 Settings can be modified using in the following manner:
 

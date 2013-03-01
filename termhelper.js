@@ -103,8 +103,9 @@
             if (thlib.Settings.appendEndChar === true) { thlib.input.string += thlib.Settings.lineEnd; }
             process.stdout.write(thlib.Settings.lineEnd);
             thlib.input.cursor_pos = 0;
-           	if (thlib.input.string.substr(0, 3) === "run") {
-           		var cmd = thlib.input.string.substr(4);
+           	if (thlib.Settings.allowRun === true && thlib.input.string.substr(0, thlib.Settings.runAlias.length) === thlib.Settings.runAlias) {
+           		var cmd = thlib.input.string.substr(thlib.Settings.runAlias.length);
+           		if (cmd.substr(0, 1) === ' ') { cmd = cmd.substr(1); }
 				if (thlib.Settings.appendEndChar === true) { cmd.replace(thlib.Settings.lineEnd, ''); }
            		exports.Run(cmd);
            		//module.exports.Prompt();
