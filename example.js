@@ -9,13 +9,17 @@ term.set({
 term.Prompt();
 
 term.on('line', function (data) {
-	if (data === 'hello') { term.Writeln('world'); }
-  	term.Prompt();
+	if (data === 'hello') {
+		term.Writeln('world');
+  		term.Prompt();
+  	}
 });
 
+/*
 term.on('keypress', function (ch, key) {
   	if (key && key.name && key.name === 's') {
     	term.Write('mile');
 	    return false;
 	}
 });
+*/

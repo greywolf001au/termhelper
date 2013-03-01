@@ -12,9 +12,7 @@
 (function () {
     "use strict";
 
-    var keypress = require('keypress'), thlib = require('./termhelper.lib.js');
-    //  , colors = require('colors')
-
+    var keypress = require('keypress'), thlib = require('./termhelper.lib.js'), util = require('util'), exec = require('child_process').exec, child;
 
     keypress(process.stdin);
 
@@ -67,8 +65,21 @@
             process.stdout.write(thlib.input.string);
         },
         Writeln: function (text) {
-            process.stdout.write(text + thlib.Settings.lineEnd);
+            module.exports.Write(text + thlib.Settings.lineEnd);
             thlib.input.cursor_pos = 0;
+        },
+        run: function (command) {
+			child = exec(command, // command line argument directly in string
+			function (error, stdout, stderr) {      // one easy function to capture data/errors
+				process.stdout.write(stdout);
+				if (stderr !== null && stderr !== '') {
+					process.stdout.write(stderr.split(':').splice(1, 2).join('').substr(1));
+				}
+				if (error !== null) {
+					//process.stdout.write(error);
+				}
+				module.exports.Prompt();
+			});
         }
     };
 
@@ -92,6 +103,12 @@
             if (thlib.Settings.appendEndChar === true) { thlib.input.string += thlib.Settings.lineEnd; }
             process.stdout.write(thlib.Settings.lineEnd);
             thlib.input.cursor_pos = 0;
+           	if (thlib.input.string.substr(0, 3) === "run") {
+           		var cmd = thlib.input.string.substr(4);
+				if (thlib.Settings.appendEndChar === true) { cmd.replace(thlib.Settings.lineEnd, ''); }
+           		module.exports.run(cmd);
+           		//module.exports.Prompt();
+           	}
             exports.events.line(thlib.input.string);
             thlib.input.string = '';
         } else if (conproc !== false && key && key.name === 'up' && thlib.input.history_position > -1) {
@@ -142,7 +159,22 @@
                 if (thlib.Settings.echoKeys === true) { process.stdout.write(thlib.input.string); }
                 process.stdout.cursorTo(thlib.input.cursor_pos);
             }
+        } else if (conproc !== false && key && key.name === 'delete') {
+            if (thlib.input.cursor_pos > thlib.Settings.prompt.length) {
+                process.stdout.clearLine();  // clear current text
+                process.stdout.cursorTo(0);
+                thlib.input.cursor_pos -= thlib.Settings.prompt.length;
+                exports.Prompt();
+                ostra = thlib.input.string.split('');
+                ostra.splice((thlib.input.cursor_pos - thlib.Settings.prompt.length), 1);
+                newstr = ostra.join('');
+                thlib.input.string = newstr;
+                thlib.input.cursor_pos -= 1;
+                if (thlib.Settings.echoKeys === true) { process.stdout.write(thlib.input.string); }
+                process.stdout.cursorTo(thlib.input.cursor_pos);
+            }
         } else if (conproc !== false && key && key.ctrl === true && key.name === 'c' && thlib.Settings.allowKill === true) {
+        	process.stdout.write(thlib.Settings.lineEnd);
             process.exit();
         } else if (conproc !== false && ch) {
             //thlib.input.string += ch;
