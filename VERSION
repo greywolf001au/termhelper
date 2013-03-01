@@ -1,5 +1,13 @@
 Terminal Helper Version Edits
 
+Version 0.0.5 Updates
+
+1. Added run command to line processing to execute shell commands
+
+2. Removed keypress event override from example.js to allow commands such as 'ls' to be tested
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.0.4 Updates
 
 1. Parsed code using JSLint (http://www.jslint.com) and fixed all issues found.

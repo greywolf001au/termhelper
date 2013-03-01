@@ -1,6 +1,6 @@
   Terminal Helper
 
-  Version: 0.0.4
+  Version: 0.0.5
 
   Author: Elijah Cowley
 
@@ -114,6 +114,7 @@ Several methods have been added to make working in the terminal easier
     Writeln         term.Writeln(text)      Send text to terminal with line end
     CursorPos        term.CursorPos()       Returns an integer denoting cursor position
     CursorTo         term.CursorTo(pos)     Move the cursor to a specified position on the line
+    Run              term.Run(command)      Run shell commands from your node apps
 
   -----------------------------------------------------------------------------------------------
 

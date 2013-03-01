@@ -68,7 +68,7 @@
             module.exports.Write(text + thlib.Settings.lineEnd);
             thlib.input.cursor_pos = 0;
         },
-        run: function (command) {
+        Run: function (command) {
 			child = exec(command, // command line argument directly in string
 			function (error, stdout, stderr) {      // one easy function to capture data/errors
 				process.stdout.write(stdout);
@@ -106,7 +106,7 @@
            	if (thlib.input.string.substr(0, 3) === "run") {
            		var cmd = thlib.input.string.substr(4);
 				if (thlib.Settings.appendEndChar === true) { cmd.replace(thlib.Settings.lineEnd, ''); }
-           		module.exports.run(cmd);
+           		exports.Run(cmd);
            		//module.exports.Prompt();
            	}
             exports.events.line(thlib.input.string);
