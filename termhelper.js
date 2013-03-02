@@ -80,7 +80,7 @@
 				if (error !== null) {
 					//process.stdout.write(error);
 				}
-				//module.exports.Prompt();
+				module.exports.Prompt();
 			});
         }
     };
@@ -112,7 +112,7 @@
            		exports.Run(cmd);
            		thlib.input.cursor_pos = 0;
            		thlib.input.string = '';
-           		module.exports.Prompt();
+           		//module.exports.Prompt();
            	}
             exports.events.line(thlib.input.string);
             thlib.input.string = '';
