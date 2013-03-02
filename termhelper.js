@@ -80,7 +80,7 @@
 				if (error !== null) {
 					//process.stdout.write(error);
 				}
-				module.exports.Prompt();
+				//module.exports.Prompt();
 			});
         }
     };
