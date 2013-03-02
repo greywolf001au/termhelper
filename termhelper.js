@@ -69,7 +69,6 @@
             thlib.input.cursor_pos = 0;
             thlib.input.string = "";
             this.CursorTo(0);
-            this.Prompt();
         },
         Run: function (command) {
 			child = exec(command, // command line argument directly in string
