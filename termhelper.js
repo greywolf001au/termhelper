@@ -110,7 +110,9 @@
            		if (cmd.substr(0, 1) === ' ') { cmd = cmd.substr(1); }
 				if (thlib.Settings.appendEndChar === true) { cmd.replace(thlib.Settings.lineEnd, ''); }
            		exports.Run(cmd);
-           		//module.exports.Prompt();
+           		thlib.input.cursor_pos = 0;
+           		thlib.input.string = '';
+           		module.exports.Prompt();
            	}
             exports.events.line(thlib.input.string);
             thlib.input.string = '';
