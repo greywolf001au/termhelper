@@ -172,7 +172,7 @@
                 ostra.splice((thlib.input.cursor_pos - thlib.Settings.prompt.length), 1);
                 newstr = ostra.join('');
                 thlib.input.string = newstr;
-                thlib.input.cursor_pos -= 1;
+                //thlib.input.cursor_pos -= 1;
                 if (thlib.Settings.echoKeys === true) { process.stdout.write(thlib.input.string); }
                 process.stdout.cursorTo(thlib.input.cursor_pos);
             }
