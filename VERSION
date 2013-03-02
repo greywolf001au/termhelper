@@ -1,5 +1,10 @@
 Terminal Helper Version Edits
 
+Version 0.0.6 Updates & Fixes
+
+1. Fix bug in Writeln function that was instroduced in 0.0.5
+
+
 Version 0.0.5 Updates
 
 1. Added run command to line processing to execute shell commands

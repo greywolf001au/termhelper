@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.0.4
+	Version: 0.0.6
 	Release: Alpha
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -67,6 +67,9 @@
         Writeln: function (text) {
             module.exports.Write(text + thlib.Settings.lineEnd);
             thlib.input.cursor_pos = 0;
+            thlib.input.string = "";
+            this.CursorTo(0);
+            this.Prompt();
         },
         Run: function (command) {
 			child = exec(command, // command line argument directly in string
