@@ -59,10 +59,10 @@
         },
         Write: function (text) {
             thlib.input.string = thlib.input.string + text;
-            this.CursorTo(0);
-            this.Prompt();
+            //this.CursorTo(0);
+            //this.Prompt();
             thlib.input.cursor_pos += text.length;
-            process.stdout.write(thlib.input.string);
+            process.stdout.write(text);
         },
         Writeln: function (text) {
             module.exports.Write(text + thlib.Settings.lineEnd);
