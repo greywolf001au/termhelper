@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.0.6
+	Version: 0.0.7
 	Release: Alpha
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git

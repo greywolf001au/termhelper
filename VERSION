@@ -1,9 +1,12 @@
 Terminal Helper Version Edits
 
+Version 0.0.7 Updates & Fixes
+
+1. Added Prompt command to Writeln method
+
 Version 0.0.6 Updates & Fixes
 
 1. Fix bug in Writeln function that was instroduced in 0.0.5
-
 
 Version 0.0.5 Updates
 
