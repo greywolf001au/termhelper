@@ -5,11 +5,17 @@
   Author: Elijah Cowley
 
   Website: http://epcit.biz
+  
+  IRC: irc://irc.epcit.biz:6667
+  
+  IRC_Nick: GreyWolf
+  
+  IRC_Channels: #epcit, #help, #nodejs
 
 This module is designed to allow both keypress and string event firing and includes some helper methods for terminal commands.
-I have also included processing of arrow keys and backspace.
+I have also included basic processing of arrow keys and backspace.
 
-Tested on Debian Linux, please contact ecowley@epcit.biz to report bugs using this modules.
+Tested on Debian Linux, please contact me on IRC or via email [ ecowley@epcit.biz ] to report any bugs or get help using this modules.
 
   -----------------------------------------------------------------------------------------------
   
