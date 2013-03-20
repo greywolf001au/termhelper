@@ -1,6 +1,6 @@
   Terminal Helper
 
-  Version: 0.0.8
+  Version: 0.0.9
 
   Author: Elijah Cowley
 
@@ -67,7 +67,8 @@ or
 
 Note:
 	To have no prompt displayed set the prompt to a blank string.
-	Log settings currently must be set manually in termhelper.lib.js
+	
+Log settings can be modified using term.log.set() method. This method can take a key value pair or object containing keys and values.
 
   -----------------------------------------------------------------------------------------------
 
@@ -83,6 +84,8 @@ Note:
         Delete      Delete character infront of cursor
         Enter       Process line
         CTRL+C      Exit application
+        Home		Move cursor to start of line
+        End			Move cursor to end of line
 
   -----------------------------------------------------------------------------------------------
 
@@ -130,6 +133,18 @@ Several methods have been added to make working in the terminal easier
     CursorPos        term.CursorPos()       Returns an integer denoting cursor position
     CursorTo         term.CursorTo(pos)     Move the cursor to a specified position on the line
     Run              term.Run(command)      Run shell commands from your node apps
+    Echo			 term.Echo(command)		Echo string, evaluates JavaScript
+    log.Write		term.log.Write(data)	Write data to log file
+    log.Writeln		term.log.Writeln(data)	Write data to log and move to next line
+
+  -----------------------------------------------------------------------------------------------
+
+** Processed Input
+
+Line inputs processed from terminal
+
+	Run			Use the run alias to execute an application
+	Echo		Evaluate some JavaScript and echo the result
 
   -----------------------------------------------------------------------------------------------
 

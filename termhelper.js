@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.0.8
+	Version: 0.0.9
 	Release: Alpha
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -72,7 +72,7 @@
             thlib.input.string = thlib.input.string + text;
             thlib.input.cursor_pos += text.length;
             process.stdout.write(text);
-			if (thlib.log.level === 1 || thlib.log.level === 3) { exports.WriteLog(text); }
+			if (thlib.log.level === 1 || thlib.log.level === 3) { exports.log.Write(text); }
         },
         Writeln: function (text) {
         	// write a string to the terminal, append line end character and output prompt
@@ -88,9 +88,9 @@
 			function (error, stdout, stderr) {      // one easy function to capture data/errors
 				process.stdout.write(stdout);
 				if (thlib.log.level === 1 || thlib.log.level === 3) {
-					exports.WriteLog(stdout);
+					exports.log.Write(stdout);
 					if (stdout.substr(stdout.length - 2) !== '\r\n' && stdout.substr(stdout.length - 2) !== '\n\r' && stdout.substr(stdout.length - 1) !== '\n' && stdout.substr(stdout.length - 1) !== '\r') {
-						exports.WriteLog(thlib.Settings.lineEnd);
+						exports.log.Write(thlib.Settings.lineEnd);
 					}
 				}
 				if (stderr !== null && stderr !== '') {
@@ -112,23 +112,52 @@
         		res = data;
         	}
         	this.Writeln(res);
-			if (thlib.log.level === 1 || thlib.log.level === 3) { exports.WriteLog(res + thlib.Settings.lineEnd); }
+			if (thlib.log.level === 1 || thlib.log.level === 3) { exports.log.Writeln(res); }
         },
-        WriteLog: function (data, callback) {
-        	var path = thlib.log.path, d = new Date(), file = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear(), prepend = d.toLocaleTimeString() + ": ";
-        	if (path === '') { path = __dirname + '/logs'; }
-        	fs.exists(path, function (exists) {
-				if (exists === false) { fs.mkdir(path, thlib.log.dir_mode); }
-			});
-        	if (path.substr(path.length - 1, 1) !== '/') { path += '/'; }
-        	if (thlib.log.format === 1) { file = (d.getMonth() + 1) + '-' + d.getDate() + '-' + d.getFullYear(); }
-         	if (thlib.log.format === 2) { file = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
-       		if (thlib.log.hourly === true) { file += '_' + d.getHours(); }
-       		if (thlib.log.extension && thlib.log.extension !== '') { file += '.' + thlib.log.extension; }
-        	fs.appendFile(path + file, prepend + data, function (err) {
-				if (err) throw err;
-				if (callback) { callback(); }
-			});
+        log: {
+  	        set: function (key, val) {
+	        	// easily change settings
+	            if (!val && key === 'path') { val = ''; }
+	            if (val) {
+	                thlib.log[key] = val;
+	            } else {
+	                var x;
+	                for (x in key) {
+	                    if (key.hasOwnProperty(x)) {
+	                        thlib.log[x] = key[x];
+	                    }
+	                }
+	            }
+	        },
+        	Write: function (data, callback) {
+        		// create variables
+        		var path = thlib.log.path, d = new Date(), file = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear(), prepend = d.toLocaleTimeString() + ": ";
+        		// set empty path to current_dir/logs
+        		if (path === '') { path = __dirname + '/logs'; }
+        		// create non-existant path
+        		fs.exists(path, function (exists) {
+					if (exists === false) { fs.mkdir(path, thlib.log.dir_mode); }
+				});
+				// append slash to path string
+        		if (path.substr(path.length - 1, 1) !== '/') { path += '/'; }
+        		// create log filename based on date
+        		if (thlib.log.format === 1) { file = (d.getMonth() + 1) + '-' + d.getDate() + '-' + d.getFullYear(); }
+         		if (thlib.log.format === 2) { file = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+         		// add hour to path if hourly set
+       			if (thlib.log.hourly === true) { file += '_' + d.getHours(); }
+       			// append file extension
+       			if (thlib.log.extension.substr(0, 1) !== '.') { file += '.'; }
+       			if (thlib.log.extension && thlib.log.extension !== '') { file += thlib.log.extension; }
+       			// append data to file
+        		fs.appendFile(path + file, prepend + data, function (err) {
+					if (err) throw err;
+					// execute callback method
+					if (callback) { callback(); }
+				});
+        	},
+        	Writeln: function (data, callback) {
+        		this.Write(data + thlib.Settings.lineEnd, callback);
+        	}
         }
     };
 
@@ -156,7 +185,7 @@
             // remove line end character
             if (thlib.input.string.substr(thlib.input.string.length - 1, 1) === '\r') { thlib.input.string = thlib.input.string.substr(0, thlib.input.string.length - 1); }
             if (thlib.Settings.debug === true) { console.log(thlib.input.string); } // output debug message
-			if (thlib.log.level === 2 || thlib.log.level === 3) { exports.WriteLog(thlib.input.string + thlib.Settings.lineEnd); }
+			if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln(thlib.input.string); }
 			
             if (thlib.Settings.appendEndChar === true) { thlib.input.string += thlib.Settings.lineEnd; } // append line end character from settings
             process.stdout.write(thlib.Settings.lineEnd); // output line end character to terminal
@@ -171,8 +200,7 @@
 				if (thlib.Settings.appendEndChar === true) { cmd.replace(thlib.Settings.lineEnd, ''); }
            		exports.Run(cmd);
            		//module.exports.Prompt(); // output prompt (commented as it appears on the first line of output)
-           	}
-           	if (thlib.input.string.substr(0, 4) === 'echo') {
+           	} else if (thlib.input.string.substr(0, 4) === 'echo') {
            		// echo runs javascript eval on string and outputs result to terminal
            		var cmd = thlib.input.string.substr(5);
            		if (cmd.substr(0, 1) === ' ') { cmd = cmd.substr(1); }
@@ -239,7 +267,7 @@
             }
         } else if (conproc !== false && key && key.name === 'delete') {
         	// delete the character infront of cursor from line input
-            if (thlib.input.cursor_pos > thlib.Settings.prompt.length) {
+            if (thlib.input.cursor_pos > thlib.Settings.prompt.length-1) {
                 process.stdout.clearLine();  // clear current text
                 process.stdout.cursorTo(0);
                 thlib.input.cursor_pos -= thlib.Settings.prompt.length;
@@ -252,10 +280,14 @@
                 if (thlib.Settings.echoKeys === true) { process.stdout.write(thlib.input.string); }
                 process.stdout.cursorTo(thlib.input.cursor_pos);
             }
+        } else if (conproc !== false && key && key.name === 'end') {
+        	exports.CursorTo(thlib.input.string.length + thlib.Settings.prompt.length);
+        } else if (conproc !== false && key && key.name === 'home') {
+        	exports.CursorTo(thlib.Settings.prompt.length);
         } else if (conproc !== false && key && key.ctrl === true && key.name === 'c' && thlib.Settings.allowKill === true) {
         	// kill application (CTRL+C)
         	process.stdout.write(thlib.Settings.lineEnd);
-			if (thlib.log.level === 2 || thlib.log.level === 3) { exports.WriteLog("Application terminated" + thlib.Settings.lineEnd, function () { process.exit(); }); }
+			if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln("Application terminated", function () { process.exit(); }); }
             //process.exit();
         } else if (conproc !== false && ch) {
         	// append character to input string

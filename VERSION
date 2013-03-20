@@ -2,6 +2,28 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.0.9 Updates & Fixes
+
+1. Changed echo method to output a string on invalid JavaScript
+
+2. Update README.md with new commands
+
+3. Changed WriteLog method to log.Write
+
+4. Added log.Writeln method
+
+5. Added log.set method to change log settings
+
+6. Fixed delete key processing to allow deletion of first character
+
+7. Added home and end key processing to move cursor to start/end of line
+
+8. Added callback method to log write
+
+9. Moved process.kill in to log write callback function
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.0.8 Updates & Fixes
 
 1. Added comments to termhelper.lib.js
