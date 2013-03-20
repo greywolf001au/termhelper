@@ -1,6 +1,6 @@
   Terminal Helper
 
-  Version: 0.0.7
+  Version: 0.0.8
 
   Author: Elijah Cowley
 
@@ -37,6 +37,9 @@ In the application files you would like to use this module add the following lin
   
 ** Settings
 
+The settings can be changed in termhelper.lib.js
+The main settings are described here for reference, other settings may be added in future versions
+
 Available Settings:
 
     |  Setting      |    Default Value    |               Description             |
@@ -46,10 +49,11 @@ Available Settings:
       termHistory       true                 Keep command history
       allowKill         true                 Allow CTRL + C to kill app
       lineEnd           '\n'                 Line end charater to use
-      appendEndChar     true                 Append lineEnd character event data
+      appendEndChar     true                 Append lineEnd character to event data
       debug             false                Outputs keystroke data
       allowRun          true                 Allow running of shell commands
       runAlias          'run'                Command to execute run method
+      
 
 Settings can be modified using in the following manner:
 
@@ -61,7 +65,9 @@ or
       debug: true
     });
 
-Note: To have no prompt displayed set the prompt to a blank string.
+Note:
+	To have no prompt displayed set the prompt to a blank string.
+	Log settings currently must be set manually in termhelper.lib.js
 
   -----------------------------------------------------------------------------------------------
 

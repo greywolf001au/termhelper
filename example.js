@@ -11,7 +11,7 @@ term.Prompt();
 term.on('line', function (data) {
 	if (data === 'hello') {
 		term.Writeln('world');
-  		term.Prompt();
+  		/*term.Prompt();*/
   	}
 });
 

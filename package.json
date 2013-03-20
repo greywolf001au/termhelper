@@ -1,11 +1,14 @@
 {
   "name": "termhelper",
-  "version": "0.0.7",
-  "description": "Allow processing of key press events and strings on enter key",
+  "version": "0.0.8",
+  "description": "Allow processing of key press events and strings on enter key. Log input and output. Execute terminal commands and more.",
   "author": {
     "name": "Elijah Cowley",
     "email": "ecowley@epcit.biz",
     "url": "http://epcit.biz"
+  },
+  "dependencies": {
+      "keypress": ">= 0.0.1",
   },
   "main": "termhelper.js",
   "repository": {
@@ -16,7 +19,10 @@
     "keypress",
     "line",
     "process",
-    "core"
+    "core",
+    "logging",
+    "execute",
+    "run"
   ],
   "license": "MIT"
   , "private": false

@@ -1,12 +1,32 @@
 Terminal Helper Version Edits
 
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Version 0.0.8 Updates & Fixes
+
+1. Added comments to termhelper.lib.js
+
+2. Added input / output file logging options
+
+3. Moved prompt command to line input method from Writeln and added a boolean to disable it for run command etc.
+
+4. Added echo method to evaluate algorithms and output results. Echo will output a string if it is not a valid JavaScript algorithm.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.0.7 Updates & Fixes
 
 1. Added Prompt command to Writeln method
 
+2. Added developer IRC details to README.md
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.0.6 Updates & Fixes
 
 1. Fix bug in Writeln function that was instroduced in 0.0.5
+
+---------------------------------------------------------------------------------------------------------------------------------------------
 
 Version 0.0.5 Updates
 
