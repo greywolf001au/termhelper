@@ -2,6 +2,38 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.1.0 Updates & Fixes
+
+1. Added log setting for prepending timestamp
+
+2. Added object output functionality to Writeln method
+
+3. Added test1 keyword to example.js to test object output
+
+4. Added exit and prompt methods to line processing
+
+5. Line processing will output 'invalid command' when event handler returns false or an object containing a key named 'valid' and the value false
+
+6. Renamed termhelper.lib.js key 'Settings' to 'settings'
+
+7. Added section variable to set method
+
+8. Moved runAlias setting to alias.run
+
+9. Added aliases for all other line processing commands
+
+10. Removed ambiguous append keypress char on enter key and call to replace
+
+11. Changed termHistory to integer denoting maximum length
+
+12. Added ability to skip individual keypress events
+
+13. Added code to check last command in history is not the same as the current command
+
+14. Added lib object for external access to termhelper.lib.js
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.0.9 Updates & Fixes
 
 1. Changed echo method to output a string on invalid JavaScript

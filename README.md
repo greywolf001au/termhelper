@@ -1,6 +1,6 @@
   Terminal Helper
 
-  Version: 0.0.9
+  Version: 0.1.0
 
   Author: Elijah Cowley
 
@@ -38,7 +38,7 @@ In the application files you would like to use this module add the following lin
 ** Settings
 
 The settings can be changed in termhelper.lib.js
-The main settings are described here for reference, other settings may be added in future versions
+The main settings are described here for reference, other settings may be added in future versions.
 
 Available Settings:
 
@@ -52,15 +52,23 @@ Available Settings:
       appendEndChar     true                 Append lineEnd character to event data
       debug             false                Outputs keystroke data
       allowRun          true                 Allow running of shell commands
-      runAlias          'run'                Command to execute run method
+      
       
 
 Settings can be modified using in the following manner:
+    term.set(section, key, value)
+Where 'section' refers to the section key, current sections are: settings, log, alias
+If a section is null the default section of 'settings' will be used.
+Key refers to the settings key to change, key may be an object of key/value pairs.
+Value is the new value for the setting.
 
-    term.set('prompt', 'node.js> ');
+    Example:
 
-or
-    term.set({
+    term.set('settings', 'prompt', 'node.js> ');
+
+    or
+    
+    term.set(null, {
       prompt: 'node.js> ',
       debug: true
     });
@@ -68,7 +76,6 @@ or
 Note:
 	To have no prompt displayed set the prompt to a blank string.
 	
-Log settings can be modified using term.log.set() method. This method can take a key value pair or object containing keys and values.
 
   -----------------------------------------------------------------------------------------------
 
@@ -109,13 +116,18 @@ Default key press processing can be bypassed by returning false from your event 
 Example:
 
     term.on('before_proc', function(ch, key) {
-      if (ch == 's') {
-        Add your code here....
+      if (key && key.name === 'home') {
+        Add code here....
         return false;
       }
+      return { home: false }
     }
 
-Note: bypassing command processing will cause all key press events to be bypassed including enter and CTRL+C, future versions will allow bypass of individual keystrokes
+Note: bypassing command processing will cause all key press events to be bypassed including enter and CTRL+C, to skip individual keypress events return an object containing keyname: false
+
+Line processing will give an invalid command when false is returned from the event handler method.
+Optionally an object can be returned containing a key named 'valid' and a boolean value.
+The prompt can be disabled for a command by returning an object with a 'prompt' key and the boolean value of false (see example.js)
 
   -----------------------------------------------------------------------------------------------
 
@@ -125,6 +137,8 @@ Several methods have been added to make working in the terminal easier
 
     Method        |      Useage         |   Description                                                                    |
     ------------------------------------------------------------------------------------------------------------------------
+    Set			    term.set(s, k, v)		Change section of termhelper.lib.js
+    On				term.on(evt, method)	Overwrite default event handler with custom method
     Clear              term.Clear()         Clear terminal window
     ClearLine        term.ClearLine()       Clear output from current line (clear prompt, does not clear input string)
     Prompt            term.Prompt()         Output prompt string
@@ -145,18 +159,18 @@ Line inputs processed from terminal
 
 	Run			Use the run alias to execute an application
 	Echo		Evaluate some JavaScript and echo the result
+	Prompt		Change the terminal prompt, can evaluate JavaScript when setting
+	Exit		Exits the application
 
   -----------------------------------------------------------------------------------------------
 
 ** Changes For Future Versions
 
-1) Bypassing events will be changed to allow selection of key events to bypass.
+1) Make this a standalone module without requirement of keypress module.
 
-2) Make this a standalone module without requirement of keypress module.
+2) Basic code cleanup and bug fixes.
 
-3) Basic code cleanup and bug fixes.
-
-4) Possibly add string colouring and styles.
+3) Possibly add string colouring and styles.
 
   -----------------------------------------------------------------------------------------------
 

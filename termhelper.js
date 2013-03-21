@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.0.9
+	Version: 0.1.0
 	Release: Alpha
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -19,26 +19,31 @@
     keypress(process.stdin);
 
     module.exports = {
+    	lib: thlib,
         events: {
         	// default event declarations
             before_proc: function (ch, key) { return { ch: ch, key: key }; },
             keypress: function (ch, key) { return { ch: ch, key: key }; },
-            line: function (data) { return data; }
+            line: function (data) { return false; }
         },
         on: function (event, callback) {
         	// method to store events
             this.events[event] = callback;
         },
-        set: function (key, val) {
+        set: function (section, key, val) {
         	// easily change settings
+        	var s = {};
+        	if (section) { s = section; }
+        	if (!section || section === null || section === '') { s = 'settings'; }
+        	
             if (!val && key === 'prompt') { val = ''; }
             if (val) {
-                thlib.Settings[key] = val;
+                thlib[s][key] = val;
             } else {
                 var x;
                 for (x in key) {
                     if (key.hasOwnProperty(x)) {
-                        thlib.Settings[x] = key[x];
+                        thlib[s][x] = key[x];
                     }
                 }
             }
@@ -76,10 +81,24 @@
         },
         Writeln: function (text) {
         	// write a string to the terminal, append line end character and output prompt
-            module.exports.Write(text + thlib.Settings.lineEnd);
+        	if (typeof(text) === 'string' || typeof(text) === 'number') {
+            	module.exports.Write(text + thlib.settings.lineEnd);
+            } else {
+            	try {
+            		var out = '{' + thlib.settings.lineEnd;
+            		for (var x in text) {
+            			out += '\t' + x + ': ' + text[x] + thlib.settings.lineEnd;
+            		}
+            		out += '}' + thlib.settings.lineEnd;
+            		this.Write(out);
+            	} catch (ex) {
+            		//this.Writeln(ex.message);
+            	}
+            }
             thlib.input.cursor_pos = 0;
             thlib.input.string = '';
             this.CursorTo(0);
+            return false;
             /*this.Prompt();*/
         },
         Run: function (command) {
@@ -90,7 +109,7 @@
 				if (thlib.log.level === 1 || thlib.log.level === 3) {
 					exports.log.Write(stdout);
 					if (stdout.substr(stdout.length - 2) !== '\r\n' && stdout.substr(stdout.length - 2) !== '\n\r' && stdout.substr(stdout.length - 1) !== '\n' && stdout.substr(stdout.length - 1) !== '\r') {
-						exports.log.Write(thlib.Settings.lineEnd);
+						exports.log.Write(thlib.settings.lineEnd);
 					}
 				}
 				if (stderr !== null && stderr !== '') {
@@ -149,14 +168,17 @@
        			if (thlib.log.extension.substr(0, 1) !== '.') { file += '.'; }
        			if (thlib.log.extension && thlib.log.extension !== '') { file += thlib.log.extension; }
        			// append data to file
+       			if (!thlib.log.timestamp || thlib.log.timestamp === false) { prepend = ''; }
         		fs.appendFile(path + file, prepend + data, function (err) {
-					if (err) throw err;
+					if (err && thlib.settings.error_level === 3) { throw err; }
+					//if (err && thlib.settings.error_level === 2) { exports.Writeln(err); }
+					//if (err && thlib.settings.error_level === 1) { exports.log.Writeln(err); }
 					// execute callback method
 					if (callback) { callback(); }
 				});
         	},
         	Writeln: function (data, callback) {
-        		this.Write(data + thlib.Settings.lineEnd, callback);
+        		this.Write(data + thlib.settings.lineEnd, callback);
         	}
         }
     };
@@ -167,143 +189,177 @@
     process.stdin.on('keypress', function (ch, key) {
     	var prompt = true;
     	
-        if (thlib.Settings.debug === true) { console.log(key); }
+        if (thlib.settings.debug === true) { console.log(key); }
 
 		// call before process event handler
         var conproc = exports.events.before_proc(ch, key), ostra = [], newstr = '', ostr = '';
 
 		// run command processor providing false was not returned from before_proc event handler
-        if (conproc !== false && key && key.name === 'enter') {
+        if (conproc !== false && (!conproc.enter && conproc.enter !== false) && key && key.name === 'enter') {
         	// process enter key
-            thlib.input.string += ch; // append character to input string
+            //thlib.input.string += ch; // append character to input string
             thlib.input.cursor_pos += 1; // increment cursor position
-            if (thlib.Settings.termHistory === true) {
+            if (thlib.settings.termHistory != 0 && thlib.input.history[thlib.input.history.length - 1] !== thlib.input.string) {
             	// store input history
                 thlib.input.history.push(thlib.input.string);
                 thlib.input.history_position = thlib.input.history.length - 1;
             }
+            
+            if (thlib.settings.termHistory > 0 && thlib.input.history.length > thlib.settings.termHistory) {
+            	thlib.input.history.splice(0, 1)
+            }
+            
+            
             // remove line end character
+            /*
+            if (thlib.input.string.substr(thlib.input.string.length - 1, 2) === '\r\n') { thlib.input.string = thlib.input.string.substr(0, thlib.input.string.length - 2); }
+            if (thlib.input.string.substr(thlib.input.string.length - 1, 2) === '\n\r') { thlib.input.string = thlib.input.string.substr(0, thlib.input.string.length - 2); }
             if (thlib.input.string.substr(thlib.input.string.length - 1, 1) === '\r') { thlib.input.string = thlib.input.string.substr(0, thlib.input.string.length - 1); }
-            if (thlib.Settings.debug === true) { console.log(thlib.input.string); } // output debug message
+            if (thlib.input.string.substr(thlib.input.string.length - 1, 1) === '\n') { thlib.input.string = thlib.input.string.substr(0, thlib.input.string.length - 1); }
+            */
+            
+            if (thlib.settings.debug === true) { console.log(thlib.input.string); } // output debug message
 			if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln(thlib.input.string); }
 			
-            if (thlib.Settings.appendEndChar === true) { thlib.input.string += thlib.Settings.lineEnd; } // append line end character from settings
-            process.stdout.write(thlib.Settings.lineEnd); // output line end character to terminal
+            if (thlib.settings.appendEndChar === true) { thlib.input.string += thlib.settings.lineEnd; } // append line end character from settings
+            process.stdout.write(thlib.settings.lineEnd); // output line end character to terminal
             //thlib.input.cursor_pos = 0; // set cursor position to 0
             exports.CursorTo(0); // set cursor position to 0
             
-           	if (thlib.Settings.allowRun === true && thlib.input.string.substr(0, thlib.Settings.runAlias.length) === thlib.Settings.runAlias) {
+           	if (thlib.settings.allowRun === true && thlib.input.string.substr(0, thlib.alias.run.length) === thlib.alias.run) {
            		// execute command in terminal
            		prompt = false;
-           		var cmd = thlib.input.string.substr(thlib.Settings.runAlias.length);
+           		var cmd = thlib.input.string.substr(thlib.alias.run.length);
            		if (cmd.substr(0, 1) === ' ') { cmd = cmd.substr(1); }
-				if (thlib.Settings.appendEndChar === true) { cmd.replace(thlib.Settings.lineEnd, ''); }
+				if (thlib.settings.appendEndChar === true) { cmd.replace(thlib.settings.lineEnd, ''); }
            		exports.Run(cmd);
            		//module.exports.Prompt(); // output prompt (commented as it appears on the first line of output)
-           	} else if (thlib.input.string.substr(0, 4) === 'echo') {
+           	} else if (thlib.input.string.substr(0, thlib.alias.echo.length) === thlib.alias.echo) {
            		// echo runs javascript eval on string and outputs result to terminal
-           		var cmd = thlib.input.string.substr(5);
+           		var cmd = thlib.input.string.substr(thlib.alias.echo.length + 1);
            		if (cmd.substr(0, 1) === ' ') { cmd = cmd.substr(1); }
            		exports.Echo(cmd);
+           	} else if (thlib.input.string.substr(0, thlib.alias.prompt.length) === thlib.alias.prompt) {
+           		// echo runs javascript eval on string and outputs result to terminal
+           		var cmd = thlib.input.string.substr(thlib.alias.prompt.length + 1);
+           		if (cmd.substr(0, 1) === ' ') { cmd = cmd.substr(1); }
+           		try {
+           			exports.set('settings', 'prompt', eval(cmd));
+           		} catch (ex) {
+           			exports.set('settings', 'prompt', cmd);
+           		}
+           	} else if (thlib.input.string.substr(0, thlib.alias.exit.length) === thlib.alias.exit) {
+           		// exit application
+           		prompt = false;
+				if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln("Application exit", function () { process.exit(); }); }
+            } else if (thlib.input.string === '' || thlib.input.string === thlib.settings.lineEnd) {
+          	} else {
+        	   	// fire line event handler
+    	        var r = exports.events.line(thlib.input.string);
+    	        if ((typeof(r) === 'boolean' && r === false) || (typeof(r) === 'object' && r.valid && r.valid === false)) {
+    	        	exports.Writeln('Invalid command [' + thlib.input.string + ']');
+    	        }
+    	        if (typeof(r) === 'object' && r.prompt && r.prompt === false) {
+    	        	prompt = false;
+    	        }
            	}
-           	
-           	// fire line event handler
-            exports.events.line(thlib.input.string);
             
             thlib.input.string = ''; // reset input string
             if (prompt !== false) { exports.Prompt(); }
-        } else if (conproc !== false && key && key.name === 'up' && thlib.input.history_position > -1) {
+        } else if (conproc !== false && (!conproc.up && conproc.up !== false) && key && key.name === 'up' && thlib.input.history_position > -1) {
         	// scroll back through command history
-            if (thlib.Settings.termHistory === true) {
+            if (thlib.settings.termHistory !== 0) {
                 process.stdout.clearLine();  // clear current text
                 thlib.input.cursor_pos = 0;
                 process.stdout.cursorTo(0);
                 exports.Prompt();
                 if (thlib.input.history_position < thlib.input.history.length && thlib.input.history_position > -1) {
-                    process.stdout.write(thlib.input.history[thlib.input.history_position].substr(0, thlib.input.history[thlib.input.history_position].length - 1));
-                    thlib.input.string = thlib.input.history[thlib.input.history_position].substr(0, thlib.input.history[thlib.input.history_position].length - 1);
+                    process.stdout.write(thlib.input.history[thlib.input.history_position].substr(0, thlib.input.history[thlib.input.history_position].length));
+                    thlib.input.string = thlib.input.history[thlib.input.history_position].substr(0, thlib.input.history[thlib.input.history_position].length);
                     thlib.input.cursor_pos += thlib.input.string.length;
                 }
                 if (thlib.input.history_position > 0) { thlib.input.history_position -= 1; }
             }
-        } else if (conproc !== false && key && key.name === 'down' && thlib.input.history_position < thlib.input.history.length) {
+        } else if (conproc !== false && (!conproc.down && conproc.down !== false) && key && key.name === 'down' && thlib.input.history_position < thlib.input.history.length) {
         	// scroll forward through command history
-            if (thlib.Settings.termHistory === true) {
+            if (thlib.settings.termHistory !== 0) {
                 process.stdout.clearLine();  // clear current text
                 process.stdout.cursorTo(0);
                 thlib.input.cursor_pos = 0;
                 exports.Prompt();
                 if (thlib.input.history_position < thlib.input.history.length - 1) {
                     thlib.input.history_position += 1;
-                    process.stdout.write(thlib.input.history[thlib.input.history_position].substr(0, thlib.input.history[thlib.input.history_position].length - 1));
-                    thlib.input.string = thlib.input.history[thlib.input.history_position].substr(0, thlib.input.history[thlib.input.history_position].length - 1);
+                    process.stdout.write(thlib.input.history[thlib.input.history_position].substr(0, thlib.input.history[thlib.input.history_position].length));
+                    thlib.input.string = thlib.input.history[thlib.input.history_position].substr(0, thlib.input.history[thlib.input.history_position].length);
                 } else {
                     thlib.input.string = '';
                 }
                 thlib.input.cursor_pos += thlib.input.string.length;
             }
-        } else if (conproc !== false && key && key.name === 'left') {
-        	// move back through line input, stops at prompt
-            if (thlib.input.cursor_pos > thlib.Settings.prompt.length) { thlib.input.cursor_pos -= 1; }
-            process.stdout.cursorTo(thlib.input.cursor_pos);
-        } else if (conproc !== false && key && key.name === 'right') {
+        } else if ((conproc !== false && !conproc.left && conproc.left !== false) && key && key.name === 'left') {
+      		// move back through line input, stops at prompt
+           	if (thlib.input.cursor_pos > thlib.settings.prompt.length) { thlib.input.cursor_pos -= 1; }
+           	process.stdout.cursorTo(thlib.input.cursor_pos);
+        } else if (conproc !== false && (!conproc.right && conproc.right !== false) && key && key.name === 'right') {
         	// move forward through line input, stop at end of line
-            if (thlib.input.cursor_pos < (thlib.input.string.length + thlib.Settings.prompt.length)) { thlib.input.cursor_pos += 1; }
+            if (thlib.input.cursor_pos < (thlib.input.string.length + thlib.settings.prompt.length)) { thlib.input.cursor_pos += 1; }
             process.stdout.cursorTo(thlib.input.cursor_pos);
-        } else if (conproc !== false && key && key.name === 'backspace') {
+        } else if (conproc !== false && (!conproc.backspace && conproc.backspace !== false) && key && key.name === 'backspace') {
         	// delete the character behind the cursor from line input
-            if (thlib.input.cursor_pos > thlib.Settings.prompt.length) {
+            if (thlib.input.cursor_pos > thlib.settings.prompt.length) {
                 process.stdout.clearLine();  // clear current text
                 process.stdout.cursorTo(0);
-                thlib.input.cursor_pos -= thlib.Settings.prompt.length;
+                thlib.input.cursor_pos -= thlib.settings.prompt.length;
                 exports.Prompt();
                 ostra = thlib.input.string.split('');
-                ostra.splice((thlib.input.cursor_pos - thlib.Settings.prompt.length) - 1, 1);
+                ostra.splice((thlib.input.cursor_pos - thlib.settings.prompt.length) - 1, 1);
                 newstr = ostra.join('');
                 thlib.input.string = newstr;
                 thlib.input.cursor_pos -= 1;
-                if (thlib.Settings.echoKeys === true) { process.stdout.write(thlib.input.string); }
+                if (thlib.settings.echoKeys === true) { process.stdout.write(thlib.input.string); }
                 process.stdout.cursorTo(thlib.input.cursor_pos);
             }
-        } else if (conproc !== false && key && key.name === 'delete') {
+        } else if (conproc !== false && (!conproc.delete && conproc.delete !== false) && key && key.name === 'delete') {
         	// delete the character infront of cursor from line input
-            if (thlib.input.cursor_pos > thlib.Settings.prompt.length-1) {
+            if (thlib.input.cursor_pos > thlib.settings.prompt.length-1) {
                 process.stdout.clearLine();  // clear current text
                 process.stdout.cursorTo(0);
-                thlib.input.cursor_pos -= thlib.Settings.prompt.length;
+                thlib.input.cursor_pos -= thlib.settings.prompt.length;
                 exports.Prompt();
                 ostra = thlib.input.string.split('');
-                ostra.splice((thlib.input.cursor_pos - thlib.Settings.prompt.length), 1);
+                ostra.splice((thlib.input.cursor_pos - thlib.settings.prompt.length), 1);
                 newstr = ostra.join('');
                 thlib.input.string = newstr;
                 //thlib.input.cursor_pos -= 1;
-                if (thlib.Settings.echoKeys === true) { process.stdout.write(thlib.input.string); }
+                if (thlib.settings.echoKeys === true) { process.stdout.write(thlib.input.string); }
                 process.stdout.cursorTo(thlib.input.cursor_pos);
             }
-        } else if (conproc !== false && key && key.name === 'end') {
-        	exports.CursorTo(thlib.input.string.length + thlib.Settings.prompt.length);
-        } else if (conproc !== false && key && key.name === 'home') {
-        	exports.CursorTo(thlib.Settings.prompt.length);
-        } else if (conproc !== false && key && key.ctrl === true && key.name === 'c' && thlib.Settings.allowKill === true) {
+        } else if (conproc !== false && (!conproc.end && conproc.end !== false) && key && key.name === 'end') {
+        	exports.CursorTo(thlib.input.string.length + thlib.settings.prompt.length);
+        } else if (conproc !== false && (!conproc.home && conproc.home !== false) && key && key.name === 'home') {
+        	exports.CursorTo(thlib.settings.prompt.length);
+        } else if (conproc !== false && (!conproc.kill && conproc.kill !== false) && key && key.ctrl === true && key.name === 'c' && thlib.settings.allowKill === true) {
         	// kill application (CTRL+C)
-        	process.stdout.write(thlib.Settings.lineEnd);
-			if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln("Application terminated", function () { process.exit(); }); }
+        	process.stdout.write(thlib.settings.lineEnd);
+			if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln("Application killed", function () { process.exit(); }); }
             //process.exit();
         } else if (conproc !== false && ch) {
         	// append character to input string
         	
             //thlib.input.string += ch;
             ostr = thlib.input.string;
-            if (thlib.input.cursor_pos < (thlib.Settings.prompt.length + thlib.input.string.length)) {
-                thlib.input.string = [ostr.slice(0, thlib.input.cursor_pos - thlib.Settings.prompt.length), ch, ostr.slice(thlib.input.cursor_pos - thlib.Settings.prompt.length)].join('');
+            if (thlib.input.cursor_pos < (thlib.settings.prompt.length + thlib.input.string.length)) {
+                thlib.input.string = [
+                	ostr.slice(0, thlib.input.cursor_pos - thlib.settings.prompt.length), ch, ostr.slice(thlib.input.cursor_pos - thlib.settings.prompt.length)
+                ].join('');
             } else {
                 thlib.input.string += ch;
             }
             thlib.input.cursor_pos += 1;
-            if (thlib.Settings.echoKeys) { //process.stdout.write(ch);
+            if (thlib.settings.echoKeys) {
                 process.stdout.clearLine();  // clear current text
                 process.stdout.cursorTo(0);
-                thlib.input.cursor_pos -= thlib.Settings.prompt.length;
+                thlib.input.cursor_pos -= thlib.settings.prompt.length;
                 exports.Prompt();
                 process.stdout.write(thlib.input.string);
                 process.stdout.cursorTo(thlib.input.cursor_pos);
