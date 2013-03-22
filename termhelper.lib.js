@@ -14,6 +14,7 @@ module.exports = {
   },
   log: {
   	path: '',										// Path to store log files
+  	filename: '',									// Prepend this filename to the log files
   	dir_mode: '0775',								// Use the following directory mode when creating non-existant log path
   	level: 3,										// Which commands/output should be logged (0: none, 1: output only, 2: input only, 3: all input and output)
   	extension: 'log',								// Append this extension to the logfile name

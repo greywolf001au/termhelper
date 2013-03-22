@@ -186,7 +186,7 @@
 	        },
         	Write: function (data, callback) {
         		// create variables
-        		var path = thlib.log.path, d = new Date(), file = exports.formatDate(thlib.log.date_format, thlib.log.date_splitter), prepend = d.toLocaleTimeString() + ": ";
+        		var path = thlib.log.path, d = new Date(), file = thlib.log.filename + exports.formatDate(thlib.log.date_format, thlib.log.date_splitter), prepend = d.toLocaleTimeString() + ": ";
         		// set empty path to current_dir/logs
         		if (path === '') { path = __dirname + '/logs'; }
         		// create non-existant path
