@@ -42,16 +42,32 @@ The main settings are described here for reference, other settings may be added 
 
 Available Settings:
 
-    |  Setting      |    Default Value    |               Description             |
-    -------------------------------------------------------------------------------
-      echoKeys          true                 Outputs key on key stroke
-      prompt            '> '                 Sets the prompt string
-      termHistory       true                 Keep command history
-      allowKill         true                 Allow CTRL + C to kill app
-      lineEnd           '\n'                 Line end charater to use
-      appendEndChar     true                 Append lineEnd character to event data
-      debug             false                Outputs keystroke data
-      allowRun          true                 Allow running of shell commands
+    |  Section    |  Setting      |    Default Value    |               Description                   |
+    ---------------------------------------------------------------------------------------------------
+      settings       echoKeys          true                 Outputs key on key stroke
+      settings       prompt            '> '                 Sets the prompt string
+      settings       termHistory       true                 Keep command history
+      settings       allowKill         true                 Allow CTRL + C to kill app
+      settings       lineEnd           '\n'                 Line end charater to use
+      settings       appendEndChar     true                 Append lineEnd character to event data
+      settings       debug             false                Outputs keystroke data
+      settings       allowRun          true                 Allow running of shell commands
+      settings       date_format         0                  Sets the format to use for dates
+      settings       date_splitter      '-'                 Sets the default date splitter (for prompt)
+    ---------------------------------------------------------------------------------------------------  
+      log            path               ''                  Set the path for storing logs
+      log            dir_mode          '0775'               Use mode when creating paths
+      log            level               3                  Logging level (input, output, both)
+      log            extension         'log'                Create log files with this extension
+      log            format              0                  Date format for log filenames
+      log            hourly            false                Create a new log file each hour
+      log            timestamp         true                 Place timestamp before each log entry
+      log            date_splitter      '-'                 Use this date splitter for log files
+    ---------------------------------------------------------------------------------------------------
+      alias          run              'run'                 Change the terminal run command
+      alias          echo             'echo'                Change the terminal echo command
+      alias          exit             'exit'                Change the terminal exit command
+      alias          prompt          'prompt'               Change the terminal prompt command
       
       
 
@@ -141,6 +157,7 @@ Several methods have been added to make working in the terminal easier
     On				term.on(evt, method)	Overwrite default event handler with custom method
     Clear              term.Clear()         Clear terminal window
     ClearLine        term.ClearLine()       Clear output from current line (clear prompt, does not clear input string)
+    getPrompt		 term.getPrompt()		Returns the evaluated prompt string
     Prompt            term.Prompt()         Output prompt string
     Write            term.Write(text)       Send text to terminal
     Writeln         term.Writeln(text)      Send text to terminal with line end
@@ -148,6 +165,7 @@ Several methods have been added to make working in the terminal easier
     CursorTo         term.CursorTo(pos)     Move the cursor to a specified position on the line
     Run              term.Run(command)      Run shell commands from your node apps
     Echo			 term.Echo(command)		Echo string, evaluates JavaScript
+    log.set         term.log.set()
     log.Write		term.log.Write(data)	Write data to log file
     log.Writeln		term.log.Writeln(data)	Write data to log and move to next line
 
@@ -159,8 +177,47 @@ Line inputs processed from terminal
 
 	Run			Use the run alias to execute an application
 	Echo		Evaluate some JavaScript and echo the result
-	Prompt		Change the terminal prompt, can evaluate JavaScript when setting
+	Prompt		Change the terminal prompt
 	Exit		Exits the application
+
+  -----------------------------------------------------------------------------------------------
+
+** Prompt String
+
+The prompt string sets the prompt that is dispayed for command entry. The string can be a literal string or a JavaScript string to be evaluated.
+The prompt string can be changed by editing the settings.prompt variable in termhelper.lib.js, using the set method to change the settings.prompt variable or by calling the prompt alias at the command line.
+
+You may also use the following notation to insert information to the prompt string:
+
+    %d		The date with the format as defined in termhelper.lib.js
+    %p		The current command line path
+    %t		The time, this uses the systems locale time string
+    %!		The command history position number (changes when cycling through history)
+    %#		The history length (command number)
+    
+Examples:
+    
+In termhelper.lib.js:
+
+    settings: {
+      prompt: "%p [%!]> ";
+      ...
+
+In your application:
+    
+    term.set("settings", "prompt", "[%d]%p> ");
+    
+On the command line:
+
+    prompt __dirname + '> ';
+
+Note: The values set in these examples could be set using in any of the prompt setting methods.
+
+  -----------------------------------------------------------------------------------------------
+  
+** App object
+
+A blank object called app has been added to store custom variables for displaying in a prompt or other evaluated commands.
 
   -----------------------------------------------------------------------------------------------
 
@@ -168,15 +225,13 @@ Line inputs processed from terminal
 
 1) Make this a standalone module without requirement of keypress module.
 
-2) Basic code cleanup and bug fixes.
-
-3) Possibly add string colouring and styles.
+2) Possibly add string colouring and styles.
 
   -----------------------------------------------------------------------------------------------
 
 ** Complimentary Modules
 
-Colors module will allow terminal colors and styles however this library extends the String prototype. While it works quite nicely it is not the prefered method.
+Colors: this module will allow terminal colors and styles however this library extends the String prototype. While it works quite nicely it is not the prefered method.
 
   -----------------------------------------------------------------------------------------------
 
@@ -185,5 +240,6 @@ Colors module will allow terminal colors and styles however this library extends
 Node.js IRC Client, this application has the alias NoIRC and will be made available soon.
 NoIRC allows browser connections to an IRC server.
 This project is still in development and is being tested on UnrealIRCD.
+if you run a different IRCD and would like to create an interpreter please contact me on my IRC server.
 
 

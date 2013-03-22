@@ -2,6 +2,26 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.1.1 Updates & Fixes
+
+1. Removed prompt method from termhelper.lib.js
+
+2. Changed termhelper.js prompt method to output prompt
+
+3. Added getPrompt method and changed code to get prompt length from this method
+
+4. Added ability to output information on the prompt
+
+5: Added 'app' object for storing application data for use when setting the prompt
+
+6. Changed Writeln method to evaluate objects
+
+7. Updated example.js to demonstrate more and added comments
+
+8. Updated README.md
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.1.0 Updates & Fixes
 
 1. Added log setting for prepending timestamp
