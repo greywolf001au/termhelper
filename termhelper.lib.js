@@ -10,7 +10,7 @@ module.exports = {
     allowRun: true,									// Allow run command to be used to execute other applications
     error_level: 3,									// Set error output type [0: none, 1: log only, 2: output (uses log.level option), 3: throw (may cause application crash)]
     date_format: 0,									// Set the date format for logging & prompt
-    date_splitter: '-',								// The symbol used to split day, month, year in the prompt
+    date_splitter: '/',								// The symbol used to split day, month, year in the prompt
   },
   log: {
   	path: '',										// Path to store log files
