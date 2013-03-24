@@ -73,6 +73,7 @@ Available Settings:
 
 Settings can be modified using in the following manner:
     term.set(section, key, value)
+
 Where 'section' refers to the section key, current sections are: settings, log, alias
 If a section is null the default section of 'settings' will be used.
 Key refers to the settings key to change, key may be an object of key/value pairs.
