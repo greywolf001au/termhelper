@@ -9,7 +9,7 @@ term.app = {
 term.set(null, {
 	debug: false,
 	prompt: "this.app.name + '> '",
-	appendEndChar: false,
+	appendEndChar: true,
 	termHistory: 3,
 });
 
@@ -32,10 +32,12 @@ term.on('line', function (data) {
 		term.Writeln(term.app);
 		return { valid: true, prompt: false }; // same as previous return statement
  	}
-  	return false; // no valid command found
+  	return { valid: false, prompt: true };; // no valid command found
 });
 
 // declare keypress event handlers, the before_proc event will occur prior to any processing (the keypress event will be called after default processing occurs)
+/*
+// Uncomment the line above and at the end to use these examples.
 term.on('before_proc', function (ch, key) {
 	// the 'T' key was pressed, output the letters 'tes', as this occurs prior to default processing the letter 'T' will be appended to the input
   	if (key && key.name && key.name === 't') {
@@ -54,4 +56,4 @@ term.on('keypress', function (ch, key) {
 	}
 	return false; // not used as default processing occurs prior to keypress event
 });
-
+*/

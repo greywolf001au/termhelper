@@ -2,6 +2,14 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.1.2 Updates & Fixes
+
+1. Updated to work with newer keypress module
+
+2. Removed single line end character variable to allow different characters for output and input
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.1.1 Updates & Fixes
 
 1. Removed prompt method from termhelper.lib.js

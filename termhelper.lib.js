@@ -4,13 +4,15 @@ module.exports = {
     prompt: '> ',									// Prompt symbols
     termHistory: -1,								// Keep command history
     allowKill: true,								// Allow CTRL+C to kill application
-    lineEnd: '\n',									// Line end character
+    lineEndOut: '\r\n',									// Output this line end character
+    lineEndIn: '\r',                                                                    // Listen for this line end character input
     appendEndChar: true,							// Append end character to commands
     debug: false,									// Show debug messages in terminal
     allowRun: true,									// Allow run command to be used to execute other applications
     error_level: 3,									// Set error output type [0: none, 1: log only, 2: output (uses log.level option), 3: throw (may cause application crash)]
     date_format: 0,									// Set the date format for logging & prompt
-    date_splitter: '/',								// The symbol used to split day, month, year in the prompt
+    date_splitter: '-',								// The symbol used to split day, month, year in the prompt
+    invalidCmdString: 'Invalid command',                                        // String to output on invalid command
   },
   log: {
   	path: '',										// Path to store log files

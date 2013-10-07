@@ -1,6 +1,6 @@
   Terminal Helper
 
-  Version: 0.1.1
+  Version: 0.1.2
 
   Author: Elijah Cowley
 
@@ -48,7 +48,8 @@ Available Settings:
       settings       prompt            '> '                 Sets the prompt string
       settings       termHistory       true                 Keep command history
       settings       allowKill         true                 Allow CTRL + C to kill app
-      settings       lineEnd           '\n'                 Line end charater to use
+      settings       lineEndOut        '\n'                 Line end charater to output
+      settings       lineEndIn         '\n'                 Line end charater to capture from input
       settings       appendEndChar     true                 Append lineEnd character to event data
       settings       debug             false                Outputs keystroke data
       settings       allowRun          true                 Allow running of shell commands
@@ -73,7 +74,6 @@ Available Settings:
 
 Settings can be modified using in the following manner:
     term.set(section, key, value)
-
 Where 'section' refers to the section key, current sections are: settings, log, alias
 If a section is null the default section of 'settings' will be used.
 Key refers to the settings key to change, key may be an object of key/value pairs.
