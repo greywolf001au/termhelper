@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.1.1
+	Version: 0.1.3
 	Release: Beta
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -204,7 +204,7 @@
        	  // append data to file
        	  if (!thlib.log.timestamp || thlib.log.timestamp === false) { prepend = ''; }
           fs.appendFile(path + file, prepend + data, function (err) {
-            if (err && thlib.settings.error_level === 3) { throw err; }
+            if (err !== null && thlib.settings.error_level === 3) { throw err; }
             //if (err && thlib.settings.error_level === 2) { exports.Writeln(err); }
             //if (err && thlib.settings.error_level === 1) { exports.log.Writeln(err); }
             // execute callback method
