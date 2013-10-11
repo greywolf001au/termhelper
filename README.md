@@ -1,6 +1,6 @@
   Terminal Helper
 
-  Version: 0.1.3
+  Version: 0.1.4
 
   Author: Elijah Cowley
 
@@ -55,6 +55,7 @@ Available Settings:
       settings       allowRun          true                 Allow running of shell commands
       settings       date_format         0                  Sets the format to use for dates
       settings       date_splitter      '-'                 Sets the default date splitter (for prompt)
+      settings       locale            'default'            Sets the language locale (Currently only supports 'default')
     ---------------------------------------------------------------------------------------------------  
       log            path               ''                  Set the path for storing logs
       log            dir_mode          '0775'               Use mode when creating paths
@@ -69,6 +70,8 @@ Available Settings:
       alias          echo             'echo'                Change the terminal echo command
       alias          exit             'exit'                Change the terminal exit command
       alias          prompt          'prompt'               Change the terminal prompt command
+      alias          version         'version'              Change the terminal version command
+      alias          show             'show'                Change the terminal show command
       
       
 
@@ -154,21 +157,23 @@ Several methods have been added to make working in the terminal easier
 
     Method        |      Useage         |   Description                                                                    |
     ------------------------------------------------------------------------------------------------------------------------
-    Set			    term.set(s, k, v)		Change section of termhelper.lib.js
-    On				term.on(evt, method)	Overwrite default event handler with custom method
-    Clear              term.Clear()         Clear terminal window
+    Set			     term.set(s, k, v)		Change section of termhelper.lib.js
+    On				 term.on(evt, method)	Overwrite default event handler with custom method
+    Clear            term.Clear()           Clear terminal window
     ClearLine        term.ClearLine()       Clear output from current line (clear prompt, does not clear input string)
     getPrompt		 term.getPrompt()		Returns the evaluated prompt string
-    Prompt            term.Prompt()         Output prompt string
+    Prompt           term.Prompt()          Output prompt string
     Write            term.Write(text)       Send text to terminal
-    Writeln         term.Writeln(text)      Send text to terminal with line end
+    Writeln          term.Writeln(text)     Send text to terminal with line end
     CursorPos        term.CursorPos()       Returns an integer denoting cursor position
     CursorTo         term.CursorTo(pos)     Move the cursor to a specified position on the line
     Run              term.Run(command)      Run shell commands from your node apps
     Echo			 term.Echo(command)		Echo string, evaluates JavaScript
-    log.set         term.log.set()
-    log.Write		term.log.Write(data)	Write data to log file
-    log.Writeln		term.log.Writeln(data)	Write data to log and move to next line
+    log.set          term.log.set()         Set log options
+    log.Write		 term.log.Write(data)	Write data to log file
+    log.Writeln		 term.log.Writeln(data)	Write data to log and move to next line
+    Version          term.Version()         Return termhelper version number
+    Show             term.Show(key)         Return termhelper information (key denotes which peice of information to show e.g name, version etc)
 
   -----------------------------------------------------------------------------------------------
 
@@ -193,6 +198,7 @@ You may also use the following notation to insert information to the prompt stri
     %d		The date with the format as defined in termhelper.lib.js
     %p		The current command line path
     %t		The time, this uses the systems locale time string
+    %v		Termhelper version number
     %!		The command history position number (changes when cycling through history)
     %#		The history length (command number)
     
@@ -220,6 +226,15 @@ Note: The values set in these examples could be set using in any of the prompt s
 
 A blank object called app has been added to store custom variables for displaying in a prompt or other evaluated commands.
 
+    prompt this.app.name + "> "
+
+  -----------------------------------------------------------------------------------------------
+
+** Module object
+
+Contains details about the termhelper module for use with evaluated methods and commands
+
+    prompt this.module.name + " " this.module.version + "> "
   -----------------------------------------------------------------------------------------------
 
 ** Changes For Future Versions

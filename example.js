@@ -1,8 +1,8 @@
 var term = require('./termhelper.js') //note: this example uses ./termhelper.js as it does not have itself as a module, to use as a module simply use 'termhelper'
 
-// application your details to the empty app object, may contain variables you want evaluating
+// add your details to the empty app object, may contain variables you want evaluating
 term.app = {
-	name: 'example#node.js'
+	name: 'termhelper#node.js'
 }
 
 // change termhelper settings
@@ -11,10 +11,12 @@ term.set(null, {
 	prompt: "this.app.name + '> '",
 	appendEndChar: true,
 	termHistory: 3,
+	locale: 'en-au',
 });
 
 // change alias for exit command to close
 term.set('alias', 'exit', 'close');
+term.set(null, 'locale', 'leet');
 
 // output the prompt on application start
 term.Prompt();

@@ -2,6 +2,28 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.1.4 Updates & Fixes
+
+1. Fixed crash on special key input
+
+2. Added version method to exports and %v variable to getPrompt method
+
+3. Fixed invalid command output string
+
+4. Added module object to display termhelper details with evaluated commands and methods
+
+5. Added locale files for output text
+
+6. Added show method to exports to output data from module object
+
+7. Added StripLineEnd method to exports object
+
+8. Cleaned up some code
+
+9. Updated README.md
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.1.3 Updates & Fixes
 
 1. Fixed log error
