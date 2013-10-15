@@ -2,6 +2,20 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.1.5 Updates & Fixes
+
+1. Removed old commented test code
+
+2. Fixed line event processing bug
+
+3. Changed Echo function to Eval
+
+4. Added new Echo function to output object as text
+
+5. Planned to fix cursor position issue when prompt is disabled on next release
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.1.4 Updates & Fixes
 
 1. Fixed crash on special key input

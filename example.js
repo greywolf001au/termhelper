@@ -9,14 +9,14 @@ term.app = {
 term.set(null, {
 	debug: false,
 	prompt: "this.app.name + '> '",
-	appendEndChar: true,
+	appendEndChar: false,
 	termHistory: 3,
 	locale: 'en-au',
 });
 
 // change alias for exit command to close
 term.set('alias', 'exit', 'close');
-term.set(null, 'locale', 'leet');
+//term.set(null, 'locale', 'leet');
 
 // output the prompt on application start
 term.Prompt();
@@ -28,17 +28,17 @@ term.on('line', function (data) {
 		term.Writeln('world');
 		return true; // used to tell the code that a valid command was typed
   	} else if (data === 'test1') {
-		term.Writeln(term.lib.settings);
-		return { valid: true, prompt: false }; // return an object containing the true for valid code and telling the in-built command not to display a prompt (avoid double up prompts)
+		term.Echo(term.lib.settings);
+		return { valid: true, prompt: true }; // return an object containing the true for valid code and telling the in-built command not to display a prompt (avoid double up prompts)
    	} else if (data === 'test2') {
-		term.Writeln(term.app);
-		return { valid: true, prompt: false }; // same as previous return statement
+		term.Echo(term.app);
+		return { valid: true, prompt: true }; // same as previous return statement
  	}
-  	return { valid: false, prompt: true };; // no valid command found
+  	return { valid: false, prompt: true }; // no valid command found
 });
 
 // declare keypress event handlers, the before_proc event will occur prior to any processing (the keypress event will be called after default processing occurs)
-/*
+
 // Uncomment the line above and at the end to use these examples.
 term.on('before_proc', function (ch, key) {
 	// the 'T' key was pressed, output the letters 'tes', as this occurs prior to default processing the letter 'T' will be appended to the input
@@ -58,4 +58,4 @@ term.on('keypress', function (ch, key) {
 	}
 	return false; // not used as default processing occurs prior to keypress event
 });
-*/
+

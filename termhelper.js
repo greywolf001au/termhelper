@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.1.4
+	Version: 0.1.5
 	Release: Beta
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -21,7 +21,7 @@
   module.exports = {
     module: {
       name: "termhelper",
-      version: "0.1.4",
+      version: "0.1.5",
       author: "Elijah Cowley",
       website: "http://epcit.biz",
       irc: "irc://irc.epcit.biz:6667",
@@ -114,29 +114,49 @@
           module.exports.Write(text + thlib.settings.lineEndOut);
         } else {
           try {
-            //if (thlib.log.level === 1 || thlib.log.level === 3) { this.log.Writeln(eval(text)); }
             // try to evaluate input text as JavaScript
             this.Write(eval(text) + thlib.settings.lineEndOut);
-            /*
-            // to output text as an object uncomment this code (remove /* style comment) and comment the line above that reads:
-            // this.write(eval(text) + thlib.settings.lineEndOut);
-            var out = '{' + thlib.settings.lineEnd;
-            for (var x in text) {
-              out += '\t' + x + ': ' + text[x] + thlib.settings.lineEndOut;
-            }
-            out += '}' + thlib.settings.lineEndOut;
-            this.Write(out);
-            */
           } catch (ex) {
             this.Write(text + thlib.settings.lineEndOut);
-            //if (thlib.log.level === 1 || thlib.log.level === 3) { this.log.Writeln(text); }
           }
         }
         thlib.input.cursor_pos = 0;
         thlib.input.string = '';
         this.CursorTo(0);
         return false;
-        /*this.Prompt();*/
+      },
+      Echo: function (text) {
+        // write a string to the terminal, append line end character and output prompt
+        if (typeof(text) === 'string' || typeof(text) === 'number') {
+          this.Write(text + thlib.settings.lineEndOut);
+        } else {
+          try {
+            // Output object as text
+            var out = '{' + thlib.settings.lineEndOut;
+            var t = '';
+            for (var x in text) {
+              t = text[x];
+              if (t === '\r') {
+                t = '\\r';
+              } else if (t === '\n') {
+                t = '\\n';
+              } else if (t === '\r\n') {
+                t = '\\r\\n';
+              } else if (t === '\n\r') {
+                t = '\\n\\r';
+              }
+              out += '\t' + x + ': ' + t + thlib.settings.lineEndOut;
+            }
+            out += '}' + thlib.settings.lineEndOut;
+            this.Write(out);
+          } catch (ex) {
+            this.Write(text + thlib.settings.lineEndOut);
+          }
+        }
+        thlib.input.cursor_pos = 0;
+        thlib.input.string = '';
+        this.CursorTo(0);
+        return '';
       },
       Run: function (command) {
         // execute a terminal command
@@ -161,7 +181,7 @@
           module.exports.Prompt();
         });
       },
-      Echo: function (data) {
+      Eval: function (data) {
         var res = '';
         try {
           res = eval(data);
@@ -218,8 +238,6 @@
        	  if (!thlib.log.timestamp || thlib.log.timestamp === false) { prepend = ''; }
           fs.appendFile(path + file, prepend + data, function (err) {
             if (err !== null && thlib.settings.error_level === 3) { throw err; }
-            //if (err && thlib.settings.error_level === 2) { exports.Writeln(err); }
-            //if (err && thlib.settings.error_level === 1) { exports.log.Writeln(err); }
             // execute callback method
             if (callback) { callback(); }
           });
@@ -299,7 +317,7 @@
           if (cmd.substr(0, 1) === ' ') { cmd = cmd.substr(1); }
           exports.Echo(cmd);
         } else if (thlib.input.string.substr(0, thlib.alias.prompt.length) === thlib.alias.prompt) {
-          // echo runs javascript eval on string and outputs result to terminal
+          // change termnal prompt
           var cmd = thlib.input.string.substr(thlib.alias.prompt.length + 1);
           cmd = exports.StripLineEnd(cmd);
           if (cmd.substr(0, 1) === ' ') { cmd = cmd.substr(1); }
@@ -323,27 +341,37 @@
           if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln(locale.AppExit, function () { process.exit(); }); }
         } else if (thlib.input.string.substr(0, thlib.alias.version.length) === thlib.alias.version) {
           exports.Writeln(exports.Version());
+        } else if (thlib.input.string.substr(0, thlib.alias.time.length) === thlib.alias.time) {
+          var d = new Date();
+          exports.Writeln(d.toLocaleTimeString());
+        } else if (thlib.input.string.substr(0, thlib.alias.date.length) === thlib.alias.date) {
+          var d = new Date();
+          exports.Writeln(exports.formatDate(thlib.settings.date_format, thlib.settings.date_splitter));
         } else if (thlib.input.string === thlib.settings.lineEndIn || thlib.input.string === "" || thlib.input.string === thlib.settings.lineEndOut) {
           // don't do anything if the user presses enter without any command (if prompt is set on display a new prompt)
         } else {
           // fire line event handler
-          var r = exports.events.line(thlib.input.string);
-    	  if ((typeof(r) === 'boolean' && r === false) || (typeof(r) === 'object' && r.valid && r.valid === false)) {
-            //exports.CursorTo(0); // set cursor position to 0
-            var cmd = thlib.input.string;
+          var cmd = thlib.input.string;
+          if (thlib.settings.appendEndChar === false) {
             cmd = exports.StripLineEnd(cmd);
-            exports.Write(locale.InvalidCommand + ' [' + cmd + ']' + thlib.settings.lineEndOut);
+          }
+          var r = exports.events.line(cmd);
+          //console.log(r);
+    	  if ((typeof(r) === 'boolean' && r === false) || (typeof(r) === 'object' && typeof(r.valid) === 'boolean' && (r.valid === false || r.valid === 'false'))) {
+            //var cmd = thlib.input.string;
+            cmd = exports.StripLineEnd(cmd);
+            exports.Writeln(locale.InvalidCommand + ' [' + cmd + ']');
     	  }
-    	  if (typeof(r) === 'object' && r.prompt && r.prompt === false) {
+    	  if (typeof(r) === 'object' && typeof(r.prompt) === 'boolean' && r.prompt === false) {
     	    prompt = false;
     	  } else {
             prompt = true;
           }
-          var cmd = thlib.input.string;
-          cmd = exports.StripLineEnd(cmd);
-          exports.Write(locale.InvalidCommand + ' [' + cmd + ']' + thlib.settings.lineEndOut);
-          thlib.input.string = "";
-          exports.CursorTo(0); // set cursor position to 0
+         // var cmd = thlib.input.string;
+//          cmd = exports.StripLineEnd(cmd);
+          //exports.Write(locale.InvalidCommand + ' [' + cmd + ']' + thlib.settings.lineEndOut);
+//          thlib.input.string = "";
+//          exports.CursorTo(0); // set cursor position to 0
         }
         thlib.input.string = ''; // reset input string
         if (prompt !== false) { exports.Prompt(); }
@@ -413,7 +441,6 @@
           ostra.splice((thlib.input.cursor_pos - exports.getPrompt().length), 1);
           newstr = ostra.join('');
           thlib.input.string = newstr;
-          //thlib.input.cursor_pos -= 1;
           if (thlib.settings.echoKeys === true) { process.stdout.write(thlib.input.string); }
           process.stdout.cursorTo(thlib.input.cursor_pos);
         }
@@ -424,12 +451,13 @@
       } else if (conproc !== false && (!conproc.kill && conproc.kill !== false) && key && key.ctrl === true && key.name === 'c' && thlib.settings.allowKill === true) {
         // kill application (CTRL+C)
         exports.Writeln("");
-        if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln(locale.AppKill, function () { process.exit(); }); }
-        //process.exit();
+        if (thlib.log.level === 2 || thlib.log.level === 3) {
+          exports.log.Writeln(locale.AppKill, function () { process.exit(); });
+        } else {
+          process.exit();
+        }
       } else if (conproc !== false && ch) {
         // append character to input string
-        	
-        //thlib.input.string += ch;
         ostr = thlib.input.string;
         if (thlib.input.cursor_pos < (exports.getPrompt().length + thlib.input.string.length)) {
           thlib.input.string = [
