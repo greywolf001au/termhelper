@@ -2,6 +2,14 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.1.7 Updates & Fixes
+
+1. Changed default error level reporting
+
+2. Fixed crash on empty prompt string
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.1.6 Updates & Fixes
 
 1. Added ability to change locale strings using set method
