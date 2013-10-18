@@ -9,7 +9,7 @@ module.exports = {
     appendEndChar: true,							// Append end character to commands
     debug: false,									// Show debug messages in terminal
     allowRun: true,									// Allow run command to be used to execute other applications
-    error_level: 3,									// Set error output type [0: none, 1: log only, 2: output (uses log.level option), 3: throw (may cause application crash)]
+    error_level: 2,									// Set error output type [0: none, 1: log only, 2: output (uses log.level option), 3: throw (may cause application crash)]
     date_format: 0,									// Set the date format for logging & prompt (0: d-m-y, 1: m-d-y, 2: y-m-d)
     date_splitter: '-',								// The symbol used to split day, month & year in the prompt
     locale: 'default',                              // Locale string sets the termhelper language locale file
