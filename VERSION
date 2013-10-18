@@ -2,6 +2,14 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.1.6 Updates & Fixes
+
+1. Added ability to change locale strings using set method
+
+2. Added new methods to README.md
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.1.5 Updates & Fixes
 
 1. Removed old commented test code

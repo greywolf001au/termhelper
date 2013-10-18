@@ -21,6 +21,7 @@ term.set('alias', 'exit', 'close');
 // output the prompt on application start
 term.Prompt();
 
+/*
 // declare events for line input
 term.on('line', function (data) {
 	// check if the user typed 'hello' and output 'world'
@@ -36,7 +37,7 @@ term.on('line', function (data) {
  	}
   	return { valid: false, prompt: true }; // no valid command found
 });
-
+*/
 // declare keypress event handlers, the before_proc event will occur prior to any processing (the keypress event will be called after default processing occurs)
 
 // Uncomment the line above and at the end to use these examples.

@@ -1,6 +1,6 @@
   Terminal Helper
 
-  Version: 0.1.5
+  Version: 0.1.6
 
   Author: Elijah Cowley
 
@@ -55,7 +55,7 @@ Available Settings:
       settings       allowRun          true                 Allow running of shell commands
       settings       date_format         0                  Sets the format to use for dates
       settings       date_splitter      '-'                 Sets the default date splitter (for prompt)
-      settings       locale            'default'            Sets the language locale (Currently only supports 'default')
+      settings       locale            'default'            Sets the language locale (See locale folder for supported locale files)
     ---------------------------------------------------------------------------------------------------  
       log            path               ''                  Set the path for storing logs
       log            dir_mode          '0775'               Use mode when creating paths
@@ -164,16 +164,19 @@ Several methods have been added to make working in the terminal easier
     getPrompt		 term.getPrompt()		Returns the evaluated prompt string
     Prompt           term.Prompt()          Output prompt string
     Write            term.Write(text)       Send text to terminal
-    Writeln          term.Writeln(text)     Send text to terminal with line end
+    Writeln          term.Writeln(text)     Send text to terminal with line end out appended
     CursorPos        term.CursorPos()       Returns an integer denoting cursor position
     CursorTo         term.CursorTo(pos)     Move the cursor to a specified position on the line
     Run              term.Run(command)      Run shell commands from your node apps
-    Echo			 term.Echo(command)		Echo string, evaluates JavaScript
+    Eval			 term.Eval(command)		Evaluate string as JavaScript
+    Echo			 term.Echo(obj)			Parse an object and output to cli 
     log.set          term.log.set()         Set log options
     log.Write		 term.log.Write(data)	Write data to log file
     log.Writeln		 term.log.Writeln(data)	Write data to log and move to next line
     Version          term.Version()         Return termhelper version number
     Show             term.Show(key)         Return termhelper information (key denotes which peice of information to show e.g name, version etc)
+    formatDate		 term.formatDate(f, s)	Return the date with the format 'f' using the splitter 's'
+    
 
   -----------------------------------------------------------------------------------------------
 

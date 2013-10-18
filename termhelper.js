@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.1.5
+	Version: 0.1.6
 	Release: Beta
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -21,7 +21,7 @@
   module.exports = {
     module: {
       name: "termhelper",
-      version: "0.1.5",
+      version: "0.1.6",
       author: "Elijah Cowley",
       website: "http://epcit.biz",
       irc: "irc://irc.epcit.biz:6667",
@@ -46,14 +46,22 @@
         	
         if (!val && key === 'prompt') { val = ''; }
         if (val) {
+          if (s === 'locale') {
+            locale[key] = val;
+          } else {
             thlib[s][key] = val;
             if (key === 'locale') { locale = require('./locale/' + thlib.settings.locale + '.lib.js'); }
+          }
         } else {
             var x;
             for (x in key) {
               if (key.hasOwnProperty(x)) {
-                thlib[s][x] = key[x];
-                if (x === 'locale') { locale = require('./locale/' + thlib.settings.locale + '.lib.js'); }
+                if (s === 'locale') {
+                  locale[x] = key[x];
+                } else {
+                  thlib[s][x] = key[x];
+                  if (x === 'locale') { locale = require('./locale/' + thlib.settings.locale + '.lib.js'); }
+                }
               }
             }
         }
@@ -120,7 +128,6 @@
             this.Write(text + thlib.settings.lineEndOut);
           }
         }
-        thlib.input.cursor_pos = 0;
         thlib.input.string = '';
         this.CursorTo(0);
         return false;
@@ -153,7 +160,7 @@
             this.Write(text + thlib.settings.lineEndOut);
           }
         }
-        thlib.input.cursor_pos = 0;
+        //thlib.input.cursor_pos = 0;
         thlib.input.string = '';
         this.CursorTo(0);
         return '';
@@ -176,7 +183,7 @@
           if (error !== null) {
             //process.stdout.write(error);
           }
-          thlib.input.cursor_pos = 0;
+          //thlib.input.cursor_pos = 0;
           thlib.input.string = '';
           module.exports.Prompt();
         });
@@ -227,8 +234,7 @@
             if (exists === false) { fs.mkdir(path, thlib.log.dir_mode); }
           });
           // append slash to path string
-          if (path.substr(path.length - 1, 1) !== '/') { path += '/'; }
-         		
+          if (path.substr(path.length - 1, 1) !== '/') { path += '/'; }	
           // add hour to path if hourly set
           if (thlib.log.hourly === true) { file += '_' + d.getHours(); }
           // append file extension
@@ -289,7 +295,7 @@
           // store input history
           thlib.input.history.push(thlib.input.string);
         }
-            
+
         if (thlib.settings.termHistory > 0 && thlib.input.history.length > thlib.settings.termHistory) {
           // remove first history entry if we are at the maximum allowed
           thlib.input.history.splice(0, 1)
@@ -367,14 +373,9 @@
     	  } else {
             prompt = true;
           }
-         // var cmd = thlib.input.string;
-//          cmd = exports.StripLineEnd(cmd);
-          //exports.Write(locale.InvalidCommand + ' [' + cmd + ']' + thlib.settings.lineEndOut);
-//          thlib.input.string = "";
-//          exports.CursorTo(0); // set cursor position to 0
         }
         thlib.input.string = ''; // reset input string
-        if (prompt !== false) { exports.Prompt(); }
+        if (prompt !== false) { exports.Prompt(); } else { exports.CursorTo(0); } // set cursor position to 0
       } else if (conproc !== false && (!conproc.up && conproc.up !== false) && key && (key.name === 'up' || key.name === '\u001b[A') && thlib.input.history_position > -1) {
         // scroll back through command history
         if (thlib.settings.termHistory !== 0) {
