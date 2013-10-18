@@ -417,7 +417,12 @@
         process.stdout.cursorTo(thlib.input.cursor_pos);
       } else if (conproc !== false && (!conproc.right && conproc.right !== false) && key && (key.name === 'right' || key.name === '\u001b[C')) {
         // move forward through line input, stop at end of line
-        if (thlib.input.cursor_pos < (thlib.input.string.length + exports.getPrompt().length)) { thlib.input.cursor_pos += 1; }
+        var plen = 0;
+        var p = exports.getPrompt();
+        if (thlib.settings.prompt !== null && thlib.settings.prompt !== '') {
+          plen = p.length;
+        }
+        if (thlib.input.cursor_pos < (thlib.input.string.length + plen)) { thlib.input.cursor_pos += 1; }
         process.stdout.cursorTo(thlib.input.cursor_pos);
       } else if (conproc !== false && (!conproc.backspace && conproc.backspace !== false) && key && (key.name === 'backspace' || key.name === '')) {
         // delete the character behind the cursor from line input
