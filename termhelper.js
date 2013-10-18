@@ -86,7 +86,7 @@
       Prompt: function () {
 	    // display prompt in terminal
 	    var p = this.getPrompt();
-	    if (p !== null && p !== '') {
+	    if (p && p !== null && p !== '') {
 	      process.stdout.write(p);
 	      thlib.input.cursor_pos += p.length;
 	    }
@@ -487,7 +487,7 @@
         ostr = thlib.input.string;
         var p = exports.getPrompt();
         var plen = 0;
-        if (p !== null && p !== '') { plen = p.length; }
+        if (p && p !== null && p !== '') { plen = p.length; }
         if (thlib.input.cursor_pos < (plen + thlib.input.string.length)) {
           thlib.input.string = [
             ostr.slice(0, thlib.input.cursor_pos - plen), ch, ostr.slice(thlib.input.cursor_pos - plen)
