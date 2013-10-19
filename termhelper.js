@@ -282,7 +282,7 @@
 
     // listen for the "keypress" event
     process.stdin.on('keypress', function (ch, key) {
-      if (processing == true) {
+      if (processing === true) {
       if (key && key.sequence) { key.name = key.sequence; }
       if (key && key.sequence && key.sequence == '\u0003') { key.name = 'c'; }
       var prompt = true;
