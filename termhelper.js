@@ -103,7 +103,7 @@
       Clear: function (prompt) {
         // clear terminal screen
         process.stdout.write('\u001B[2J\u001B[0;0f');
-        if ((!prompt || prompt === null || prompt !== false) && thlib.settings.prompt !== null && thlib.settings.prompt !== '') { module.exports.Prompt(); }
+        if ((prompt && (prompt === null || prompt === true)) && thlib.settings.prompt !== null && thlib.settings.prompt !== '') { module.exports.Prompt(); }
       },
       ClearLine: function () {
         // clear current line data
