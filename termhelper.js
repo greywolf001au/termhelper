@@ -14,7 +14,7 @@
 (function () {
   "use strict";
 
-  var keypress = require('keypress'), thlib = require('./termhelper.lib.js'), util = require('util'), fs = require('fs'), exec = require('child_process').exec, app = {}, child, locale = require('./locale/' + thlib.settings.locale + '.lib.js');
+  var keypress = require('keypress'), thlib = require('./termhelper.lib.js'), util = require('util'), fs = require('fs'), exec = require('child_process').exec, app = {}, child, locale = require('./locale/' + thlib.settings.locale + '.lib.js'), processing = true;
 
   keypress(process.stdin);
 
@@ -282,6 +282,7 @@
 
     // listen for the "keypress" event
     process.stdin.on('keypress', function (ch, key) {
+      if (processing == true) {
       if (key && key.sequence) { key.name = key.sequence; }
       if (key && key.sequence && key.sequence == '\u0003') { key.name = 'c'; }
       var prompt = true;
@@ -518,6 +519,7 @@
         
       // process keypress events
       conproc = exports.events.keypress(ch, key);
+      }
     });
 
     // this command allows processing of keystrokes

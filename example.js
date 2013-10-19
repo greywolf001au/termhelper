@@ -8,7 +8,7 @@ term.app = {
 // change termhelper settings
 term.set(null, {
 	debug: false,
-	prompt: '',//"this.app.name + '> '",
+	prompt: "this.app.name + '> '",
 	appendEndChar: false,
 	termHistory: 3,
 	locale: 'en-au',
