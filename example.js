@@ -20,7 +20,7 @@ term.set('alias', 'exit', 'close');
 
 // output the prompt on application start
 term.Prompt();
-
+//term.processing = false;
 /*
 // declare events for line input
 term.on('line', function (data) {
