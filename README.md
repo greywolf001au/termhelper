@@ -15,7 +15,7 @@
 This module is designed to allow both keypress and string event firing and includes some helper methods for terminal commands.
 I have also included basic processing of arrow keys and backspace.
 
-Tested on Debian Linux, please contact me on IRC or via email [ ecowley@epcit.biz ] to report any bugs or get help using this modules.
+Tested on Debian Linux, please contact me on IRC, via email [ ecowley@epcit.biz ] or using GitHub [ https://github.com/greywolf001au/termhelper ] to report any bugs or get help using this modules.
 
   -----------------------------------------------------------------------------------------------
   
