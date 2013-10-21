@@ -14,7 +14,7 @@ module.exports = {
     date_splitter: '-',								// The symbol used to split day, month & year in the prompt
     locale: 'default',                              // Locale string sets the termhelper language locale file
     processing: true,                               // Perform processing of key and line input
-    proc_enter: true,                               // Perform default processing for enter key
+    proc_blank_line: true,                          // Perform default processing for blank line (false will allow a blank line input to be passed to custom processing)
   },
   log: {
   	path: '',										// Path to store log files

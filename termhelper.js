@@ -356,7 +356,7 @@
         } else if (thlib.input.string.substr(0, thlib.alias.date.length) === thlib.alias.date) {
           var d = new Date();
           exports.Writeln(exports.formatDate(thlib.settings.date_format, thlib.settings.date_splitter));
-        } else if ((thlib.input.string === thlib.settings.lineEndIn || thlib.input.string === "" || thlib.input.string === thlib.settings.lineEndOut) && thlib.settings.proc_enter === true) {
+        } else if ((thlib.input.string === thlib.settings.lineEndIn || thlib.input.string === "" || thlib.input.string === thlib.settings.lineEndOut) && thlib.settings.proc_blank_line === true) {
           // don't do anything if the user presses enter without any command (if prompt is set on display a new prompt)
         } else {
           // fire line event handler
