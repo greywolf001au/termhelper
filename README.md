@@ -53,25 +53,25 @@ Available Settings:
       settings       appendEndChar     true                 Append lineEnd character to event data
       settings       debug             false                Outputs keystroke data
       settings       allowRun          true                 Allow running of shell commands
-      settings       date_format         0                  Sets the format to use for dates
-      settings       date_splitter      '-'                 Sets the default date splitter (for prompt)
+      settings       date_format       0                    Sets the format to use for dates
+      settings       date_splitter     '-'                  Sets the default date splitter (for prompt)
       settings       locale            'default'            Sets the language locale (See locale folder for supported locale files)
     ---------------------------------------------------------------------------------------------------  
-      log            path               ''                  Set the path for storing logs
+      log            path              ''                   Set the path for storing logs
       log            dir_mode          '0775'               Use mode when creating paths
-      log            level               3                  Logging level (input, output, both)
+      log            level             3                    Logging level (input, output, both)
       log            extension         'log'                Create log files with this extension
-      log            format              0                  Date format for log filenames
+      log            format            0                    Date format for log filenames
       log            hourly            false                Create a new log file each hour
       log            timestamp         true                 Place timestamp before each log entry
-      log            date_splitter      '-'                 Use this date splitter for log files
+      log            date_splitter     '-'                  Use this date splitter for log files
     ---------------------------------------------------------------------------------------------------
-      alias          run              'run'                 Change the terminal run command
-      alias          echo             'echo'                Change the terminal echo command
-      alias          exit             'exit'                Change the terminal exit command
-      alias          prompt          'prompt'               Change the terminal prompt command
-      alias          version         'version'              Change the terminal version command
-      alias          show             'show'                Change the terminal show command
+      alias          run               'run'                Change the terminal run command
+      alias          echo              'echo'               Change the terminal echo command
+      alias          exit              'exit'               Change the terminal exit command
+      alias          prompt            'prompt'             Change the terminal prompt command
+      alias          version           'version'            Change the terminal version command
+      alias          show              'show'               Change the terminal show command
       
       
 
@@ -82,11 +82,11 @@ If a section is null the default section of 'settings' will be used.
 Key refers to the settings key to change, key may be an object of key/value pairs.
 Value is the new value for the setting.
 
-    Example:
+  Example:
 
     term.set('settings', 'prompt', 'node.js> ');
 
-    or
+  or
     
     term.set(null, {
       prompt: 'node.js> ',
@@ -103,16 +103,16 @@ Note:
 
     |   Key   |           Default Function             |
     ----------------------------------------------------
-        UP          Arrow Scroll back through history
-        Down        Arrow Scroll forward through history
-        Left        Arrow Move cursor back
-        Right       Arrow Move cursor forward
+      UP            Arrow Scroll back through history
+      Down          Arrow Scroll forward through history
+      Left          Arrow Move cursor back
+      Right         Arrow Move cursor forward
       Backspace     Delete character behind cursor
-        Delete      Delete character infront of cursor
-        Enter       Process line
-        CTRL+C      Exit application
-        Home		Move cursor to start of line
-        End			Move cursor to end of line
+      Delete        Delete character infront of cursor
+      Enter         Process line
+      CTRL+C        Exit application
+      Home          Move cursor to start of line
+      End           Move cursor to end of line
 
   -----------------------------------------------------------------------------------------------
 
@@ -123,7 +123,7 @@ Events can be set for a single keypress and on line data using the following:
     term.on('before_proc', function(ch, key) {
       Add your code here....
     }
-
+    
     term.on('keypress', function(ch, key) {
       Add your code here....
     }
@@ -157,25 +157,25 @@ Several methods have been added to make working in the terminal easier
 
     Method        |      Useage         |   Description                                                                    |
     ------------------------------------------------------------------------------------------------------------------------
-    Set			     term.set(s, k, v)		Change section of termhelper.lib.js
-    On				 term.on(evt, method)	Overwrite default event handler with custom method
-    Clear            term.Clear()           Clear terminal window
-    ClearLine        term.ClearLine()       Clear output from current line (clear prompt, does not clear input string)
-    getPrompt		 term.getPrompt()		Returns the evaluated prompt string
-    Prompt           term.Prompt()          Output prompt string
-    Write            term.Write(text)       Send text to terminal
-    Writeln          term.Writeln(text)     Send text to terminal with line end out appended
-    CursorPos        term.CursorPos()       Returns an integer denoting cursor position
-    CursorTo         term.CursorTo(pos)     Move the cursor to a specified position on the line
-    Run              term.Run(command)      Run shell commands from your node apps
-    Eval			 term.Eval(command)		Evaluate string as JavaScript
-    Echo			 term.Echo(obj)			Parse an object and output to cli 
-    log.set          term.log.set()         Set log options
-    log.Write		 term.log.Write(data)	Write data to log file
-    log.Writeln		 term.log.Writeln(data)	Write data to log and move to next line
-    Version          term.Version()         Return termhelper version number
-    Show             term.Show(key)         Return termhelper information (key denotes which peice of information to show e.g name, version etc)
-    formatDate		 term.formatDate(f, s)	Return the date with the format 'f' using the splitter 's'
+    Set              term.set(s, k, v)       Change section of termhelper.lib.js
+    On               term.on(evt, method)    Overwrite default event handler with custom method
+    Clear            term.Clear()            Clear terminal window
+    ClearLine        term.ClearLine()        Clear output from current line (clear prompt, does not clear input string)
+    getPrompt        term.getPrompt()        Returns the evaluated prompt string
+    Prompt           term.Prompt()           Output prompt string
+    Write            term.Write(text)        Send text to terminal
+    Writeln          term.Writeln(text)      Send text to terminal with line end out appended
+    CursorPos        term.CursorPos()        Returns an integer denoting cursor position
+    CursorTo         term.CursorTo(pos)      Move the cursor to a specified position on the line
+    Run              term.Run(command)       Run shell commands from your node apps
+    Eval             term.Eval(command)      Evaluate string as JavaScript
+    Echo             term.Echo(obj)          Parse an object and output to cli 
+    log.set          term.log.set()          Set log options
+    log.Write        term.log.Write(data)    Write data to log file
+    log.Writeln      term.log.Writeln(data)  Write data to log and move to next line
+    Version          term.Version()          Return termhelper version number
+    Show             term.Show(key)          Return termhelper information (key denotes which peice of information to show e.g name, version etc)
+    formatDate       term.formatDate(f, s)   Return the date with the format 'f' using the splitter 's'
     
 
   -----------------------------------------------------------------------------------------------
@@ -184,10 +184,10 @@ Several methods have been added to make working in the terminal easier
 
 Line inputs processed from terminal
 
-	Run			Use the run alias to execute an application
-	Echo		Evaluate some JavaScript and echo the result
-	Prompt		Change the terminal prompt
-	Exit		Exits the application
+    Run			Use the run alias to execute an application
+    Echo		Evaluate some JavaScript and echo the result
+    Prompt		Change the terminal prompt
+    Exit		Exits the application
 
   -----------------------------------------------------------------------------------------------
 
@@ -212,16 +212,17 @@ In termhelper.lib.js:
     settings: {
       prompt: "%p [%!]> ";
       ...
+    }
 
 In your application:
-    
+
     term.set("settings", "prompt", "[%d]%p> ");
     
 On the command line:
 
     prompt __dirname + '> ';
 
-Note: The values set in these examples could be set using in any of the prompt setting methods.
+Note: The values set in these examples could be set using any of the prompt methods.
 
   -----------------------------------------------------------------------------------------------
   
