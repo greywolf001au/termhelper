@@ -2,6 +2,12 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+1. Added 'processing' switch to settings, allows input processing to be turned off
+
+2. Added 'proc_enter' setting to stop termhelper processing the enter key
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.1.7 Updates & Fixes
 
 1. Changed default error level reporting

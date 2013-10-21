@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.1.7
+	Version: 0.1.8
 	Release: Beta
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -21,7 +21,7 @@
   module.exports = {
     module: {
       name: "termhelper",
-      version: "0.1.7",
+      version: "0.1.8",
       author: "Elijah Cowley",
       website: "http://epcit.biz",
       irc: "irc://irc.epcit.biz:6667",
@@ -356,7 +356,7 @@
         } else if (thlib.input.string.substr(0, thlib.alias.date.length) === thlib.alias.date) {
           var d = new Date();
           exports.Writeln(exports.formatDate(thlib.settings.date_format, thlib.settings.date_splitter));
-        } else if (thlib.input.string === thlib.settings.lineEndIn || thlib.input.string === "" || thlib.input.string === thlib.settings.lineEndOut) {
+        } else if ((thlib.input.string === thlib.settings.lineEndIn || thlib.input.string === "" || thlib.input.string === thlib.settings.lineEndOut) && thlib.settings.proc_enter === true) {
           // don't do anything if the user presses enter without any command (if prompt is set on display a new prompt)
         } else {
           // fire line event handler

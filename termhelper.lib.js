@@ -13,7 +13,8 @@ module.exports = {
     date_format: 0,									// Set the date format for logging & prompt (0: d-m-y, 1: m-d-y, 2: y-m-d)
     date_splitter: '-',								// The symbol used to split day, month & year in the prompt
     locale: 'default',                              // Locale string sets the termhelper language locale file
-    processing: true,
+    processing: true,                               // Perform processing of key and line input
+    proc_enter: true,                               // Perform default processing for enter key
   },
   log: {
   	path: '',										// Path to store log files
