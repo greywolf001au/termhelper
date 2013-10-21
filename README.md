@@ -56,6 +56,7 @@ Available Settings:
       settings       date_format       0                    Sets the format to use for dates
       settings       date_splitter     '-'                  Sets the default date splitter (for prompt)
       settings       locale            'default'            Sets the language locale (See locale folder for supported locale files)
+      settings       processing        true                 Turns on or off key and line processing (false will stop all commands from being processed)
     ---------------------------------------------------------------------------------------------------  
       log            path              ''                   Set the path for storing logs
       log            dir_mode          '0775'               Use mode when creating paths
