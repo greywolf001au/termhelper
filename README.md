@@ -57,10 +57,7 @@ Available Settings:
       settings       date_splitter     '-'                  Sets the default date splitter (for prompt)
       settings       locale            'default'            Sets the language locale (See locale folder for supported locale files)
       settings       processing        true                 Turns on or off key and line processing (false will stop all commands from being processed)
-<<<<<<< HEAD
       settings       proc_enter        true                 Turn on or off the default processing of the enter key
-=======
->>>>>>> aa319d2cb4530cc1ea8f2466ca9fa1f24932d666
     ---------------------------------------------------------------------------------------------------  
       log            path              ''                   Set the path for storing logs
       log            dir_mode          '0775'               Use mode when creating paths
