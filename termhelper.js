@@ -45,7 +45,7 @@
         if (!section || section === null || section === '') { s = 'settings'; }
         	
         if (!val && key === 'prompt') { val = ''; }
-        if (val) {
+        if (val !== undefined) {
           if (s === 'locale') {
             locale[key] = val;
           } else {
