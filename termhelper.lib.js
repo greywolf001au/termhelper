@@ -4,8 +4,8 @@ module.exports = {
     prompt: '> ',									// Prompt symbols
     termHistory: -1,								// Keep command history
     allowKill: true,								// Allow CTRL+C to kill application
-    lineEndOut: '\r\n',									// Output this line end character
-    lineEndIn: '\r',                                                                    // Listen for this line end character input
+    lineEndOut: '\r\n',								// Output this line end character
+    lineEndIn: '\r',                                // Listen for this line end character input
     appendEndChar: true,							// Append end character to commands
     debug: false,									// Show debug messages in terminal
     allowRun: true,									// Allow run command to be used to execute other applications

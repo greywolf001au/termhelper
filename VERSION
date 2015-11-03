@@ -2,9 +2,23 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.2.0 Updates & Fixes
+
+1. fix. settings when val is false, null or empty string [contribution by 'Olof Lofteskog' from the GitHub community]
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Version 0.1.9 Updates & Fixes
+
 1. Added 'processing' switch to settings, allows input processing to be turned off
 
 2. Added 'proc_enter' setting to stop termhelper processing the enter key
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Version 0.1.8 Updates & Fixes
+
+1. House keeping
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 

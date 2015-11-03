@@ -2,12 +2,10 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.1.8
+	Version: 0.2.0
 	Release: Beta
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
-	IRC Server: irc://irc.epcit.biz:6667
-	IRC Nickname: GreyWolf
 
 */
 
@@ -21,11 +19,9 @@
   module.exports = {
     module: {
       name: "termhelper",
-      version: "0.1.8",
+      version: "0.2.0",
       author: "Elijah Cowley",
       website: "http://epcit.biz",
-      irc: "irc://irc.epcit.biz:6667",
-      nick: "GreyWolf",
     },
     lib: thlib,
       events: {

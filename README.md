@@ -1,21 +1,16 @@
   Terminal Helper
 
-  Version: 0.1.8
+  Version: 0.2.0
 
   Author: Elijah Cowley
 
   Website: http://epcit.biz
-  
-  IRC: irc://irc.epcit.biz:6667
-  
-  IRC_Nick: GreyWolf
-  
-  IRC_Channels: #epcit, #help, #nodejs
+
 
 This module is designed to allow both keypress and string event firing and includes some helper methods for terminal commands.
 I have also included basic processing of arrow keys and backspace.
 
-Tested on Debian Linux, please contact me on IRC, via email [ ecowley@epcit.biz ] or using GitHub [ https://github.com/greywolf001au/termhelper ] to report any bugs or get help using this modules.
+Tested on Debian Linux, please contact me via email [ ecowley@epcit.biz ] or using GitHub [ https://github.com/greywolf001au/termhelper ] to report any bugs or get help using this modules.
 
   -----------------------------------------------------------------------------------------------
   
@@ -241,13 +236,6 @@ A blank object called app has been added to store custom variables for displayin
 Contains details about the termhelper module for use with evaluated methods and commands
 
     prompt this.module.name + " " this.module.version + "> "
-  -----------------------------------------------------------------------------------------------
-
-** Changes For Future Versions
-
-1) Make this a standalone module without requirement of keypress module.
-
-2) Possibly add string colouring and styles.
 
   -----------------------------------------------------------------------------------------------
 
@@ -256,12 +244,5 @@ Contains details about the termhelper module for use with evaluated methods and 
 Colors: this module will allow terminal colors and styles however this library extends the String prototype. While it works quite nicely it is not the prefered method.
 
   -----------------------------------------------------------------------------------------------
-
-** Other Projects
-
-Node.js IRC Client, this application has the alias NoIRC and will be made available soon.
-NoIRC allows browser connections to an IRC server.
-This project is still in development and is being tested on UnrealIRCD.
-if you run a different IRCD and would like to create an interpreter please contact me on my IRC server.
 
 
