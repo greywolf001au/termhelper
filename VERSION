@@ -2,6 +2,14 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.2.1 Updates & Fixes
+
+1. Recreated rogue locale file and changed log.Writeln calls using locale vars
+
+2. Added locale_path setting
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.2.0 Updates & Fixes
 
 1. fix. settings when val is false, null or empty string [contribution by 'Olof Lofteskog' from the GitHub community]

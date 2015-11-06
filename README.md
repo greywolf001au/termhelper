@@ -50,7 +50,8 @@ Available Settings:
       settings       allowRun          true                 Allow running of shell commands
       settings       date_format       0                    Sets the format to use for dates
       settings       date_splitter     '-'                  Sets the default date splitter (for prompt)
-      settings       locale            'default'            Sets the language locale (See locale folder for supported locale files)
+      settings       locale            'default'            Sets the language locale (See locale folder for supported locale files, currently supports 'default' only)
+      settings       locale_path       './locale'           Sets the path to the locale file (without trailing slash)
       settings       processing        true                 Turns on or off key and line processing (false will stop all commands from being processed)
       settings       proc_blank_line   true                 Turn on or off the default processing of a blank line
     ---------------------------------------------------------------------------------------------------  

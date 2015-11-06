@@ -1,6 +1,6 @@
 {
   "name": "termhelper",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Allow processing of key press events and strings on enter key. Log input and output. Execute terminal commands and more.",
   "author": {
     "name": "Elijah Cowley",
@@ -27,7 +27,7 @@
     "keypress": ">= 0.1.0"
   },
   "readmeFilename": "README.md",
-  "_id": "termhelper@0.2.0",
+  "_id": "termhelper@0.2.1",
   "dist": {
     "shasum": "88248f83bef5f026b95da8ad533c0b3b29335c22"
   },

@@ -13,6 +13,7 @@ module.exports = {
     date_format: 0,									// Set the date format for logging & prompt (0: d-m-y, 1: m-d-y, 2: y-m-d)
     date_splitter: '-',								// The symbol used to split day, month & year in the prompt
     locale: 'default',                              // Locale string sets the termhelper language locale file
+	locale_path: './locale',						// Path to locale file (without trailing slash)
     processing: true,                               // Perform processing of key and line input
     proc_blank_line: true,                          // Perform default processing for blank line (false will allow a blank line input to be passed to custom processing)
   },
@@ -44,6 +45,6 @@ module.exports = {
     string: '',										// The current input string
     history: [],									// An array for storing history
     history_position: -1,							// The current position in the history
-    cursor_pos: 0									// Position the cursor is on the line
+    cursor_pos: 0									// Horizontal position of the cursor
   },
 }

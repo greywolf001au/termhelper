@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.2.0
+	Version: 0.2.1
 	Release: Beta
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -12,14 +12,14 @@
 (function () {
   "use strict";
 
-  var keypress = require('keypress'), thlib = require('./termhelper.lib.js'), util = require('util'), fs = require('fs'), exec = require('child_process').exec, app = {}, child, locale = require('./locale/' + thlib.settings.locale + '.lib.js');
+  var keypress = require('keypress'), thlib = require('./termhelper.lib.js'), util = require('util'), fs = require('fs'), exec = require('child_process').exec, app = {}, child, locale = require(thlib.settings.locale_path + '/' + thlib.settings.locale + '.lib.js');
 
   keypress(process.stdin);
 
   module.exports = {
     module: {
       name: "termhelper",
-      version: "0.2.0",
+      version: "0.2.1",
       author: "Elijah Cowley",
       website: "http://epcit.biz",
     },
@@ -46,7 +46,7 @@
             locale[key] = val;
           } else {
             thlib[s][key] = val;
-            if (key === 'locale') { locale = require('./locale/' + thlib.settings.locale + '.lib.js'); }
+            if (key === 'locale') { locale = require(thlib.settings.locale_path + '/' + thlib.settings.locale + '.lib.js'); }
           }
         } else {
             var x;
@@ -56,7 +56,7 @@
                   locale[x] = key[x];
                 } else {
                   thlib[s][x] = key[x];
-                  if (x === 'locale') { locale = require('./locale/' + thlib.settings.locale + '.lib.js'); }
+                  if (x === 'locale') { locale = require(thlib.settings.locale_path + './locale/' + thlib.settings.locale + '.lib.js'); }
                 }
               }
             }
@@ -343,7 +343,7 @@
         } else if (thlib.input.string.substr(0, thlib.alias.exit.length) === thlib.alias.exit) {
           // exit application
           prompt = false;
-          if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln(locale.AppExit, function () { process.exit(); }); }
+          if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln(locale.log.AppExit, function () { process.exit(); }); }
         } else if (thlib.input.string.substr(0, thlib.alias.version.length) === thlib.alias.version) {
           exports.Writeln(exports.Version());
         } else if (thlib.input.string.substr(0, thlib.alias.time.length) === thlib.alias.time) {
@@ -485,7 +485,7 @@
         // kill application (CTRL+C)
         exports.Writeln("");
         if (thlib.log.level === 2 || thlib.log.level === 3) {
-          exports.log.Writeln(locale.AppKill, function () { process.exit(); });
+          exports.log.Writeln(locale.log.AppKill, function () { process.exit(); });
         } else {
           process.exit();
         }
