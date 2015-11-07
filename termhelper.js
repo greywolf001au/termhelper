@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.2.1
+	Version: 0.2.2
 	Release: Beta
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -19,7 +19,7 @@
   module.exports = {
     module: {
       name: "termhelper",
-      version: "0.2.1",
+      version: "0.2.2",
       author: "Elijah Cowley",
       website: "http://epcit.biz",
     },

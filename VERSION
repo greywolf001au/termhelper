@@ -2,6 +2,14 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.2.2 Updates & Fixes
+
+1. Fixed typos
+
+2. Added missing comma (d'oh)
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.2.1 Updates & Fixes
 
 1. Recreated rogue locale file and changed log.Writeln calls using locale vars
