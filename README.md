@@ -73,9 +73,10 @@ Available Settings:
       
       
 
-Settings can be modified using in the following manner:
+Settings can be modified in the following manner:
     term.set(section, key, value)
-Where 'section' refers to the section key, current sections are: settings, log, alias
+	
+Where 'section' refers to the section key, current sections are: settings, log, alias & locale
 If a section is null the default section of 'settings' will be used.
 Key refers to the settings key to change, key may be an object of key/value pairs.
 Value is the new value for the setting.
@@ -101,7 +102,7 @@ Note:
 
     |   Key   |           Default Function             |
     ----------------------------------------------------
-      UP            Arrow Scroll back through history
+      Up            Arrow Scroll back through history
       Down          Arrow Scroll forward through history
       Left          Arrow Move cursor back
       Right         Arrow Move cursor forward
