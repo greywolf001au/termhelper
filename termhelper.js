@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.2.2
+	Version: 0.2.3
 	Release: Beta
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -19,7 +19,7 @@
   module.exports = {
     module: {
       name: "termhelper",
-      version: "0.2.2",
+      version: "0.2.3",
       author: "Elijah Cowley",
       website: "http://epcit.biz",
     },
@@ -287,7 +287,7 @@
       // call before process event handler
       var conproc = exports.events.before_proc(ch, key), ostra = [], newstr = '', ostr = '';
       // run command processor providing false was not returned from before_proc event handler
-      if (conproc !== false && (!conproc.enter && conproc.enter !== false) && key && (key.name === 'enter' || key.name === thlib.settings.lineEndIn)) {
+      if (conproc !== false && (!conproc.enter && conproc.enter !== false) && key && (key.name === 'enter' || key.name === "\r" || key.name === "\n" || key.name === "\r\n")) {
         // process enter key
         thlib.input.cursor_pos += 1; // increment cursor position
         if (thlib.settings.termHistory != 0 && thlib.input.history[thlib.input.history.length - 1] !== thlib.input.string) {
@@ -322,12 +322,13 @@
           if (cmd.substr(0, 1) === ' ') { cmd = cmd.substr(1); }
           exports.Echo(cmd);
         } else if (thlib.input.string.substr(0, thlib.alias.prompt.length) === thlib.alias.prompt) {
-          // change termnal prompt
+          // change terminal prompt
           var cmd = thlib.input.string.substr(thlib.alias.prompt.length + 1);
           cmd = exports.StripLineEnd(cmd);
           if (cmd.substr(0, 1) === ' ') { cmd = cmd.substr(1); }
           exports.set('settings', 'prompt', cmd);
-        } else if (thlib.input.string.substr(0, thlib.alias.show.length) === thlib.alias.show) {
+        } else if (thlib.input.string != "" && thlib.input.string.substr(0, thlib.alias.show.length) === thlib.alias.show) {
+			// show settings alias
           var cmd = thlib.input.string;
           cmd = exports.StripLineEnd(cmd);
           if (cmd.length > thlib.alias.show.length) {
@@ -343,6 +344,7 @@
         } else if (thlib.input.string.substr(0, thlib.alias.exit.length) === thlib.alias.exit) {
           // exit application
           prompt = false;
+		  exports.Writeln(locale.app.exit);
           if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln(locale.log.AppExit, function () { process.exit(); }); }
         } else if (thlib.input.string.substr(0, thlib.alias.version.length) === thlib.alias.version) {
           exports.Writeln(exports.Version());
@@ -352,6 +354,8 @@
         } else if (thlib.input.string.substr(0, thlib.alias.date.length) === thlib.alias.date) {
           var d = new Date();
           exports.Writeln(exports.formatDate(thlib.settings.date_format, thlib.settings.date_splitter));
+        } else if (thlib.input.string.substr(0, thlib.alias.clear.length) === thlib.alias.clear) {
+          process.stdout.Clear();
         } else if ((thlib.input.string === thlib.settings.lineEndIn || thlib.input.string === "" || thlib.input.string === thlib.settings.lineEndOut) && thlib.settings.proc_blank_line === true) {
           // don't do anything if the user presses enter without any command (if prompt is set on display a new prompt)
         } else {
@@ -366,7 +370,7 @@
     	  if ((typeof(r) === 'boolean' && r === false) || (typeof(r) === 'object' && typeof(r.valid) === 'boolean' && (r.valid === false || r.valid === 'false'))) {
             //var cmd = thlib.input.string;
             cmd = exports.StripLineEnd(cmd);
-            exports.Writeln(locale.InvalidCommand + ' [' + cmd + ']');
+            exports.Writeln(locale.cmd.InvalidCommand + ' [' + cmd + ']');
     	  }
     	  if (typeof(r) === 'object' && typeof(r.prompt) === 'boolean' && r.prompt === false) {
     	    prompt = false;
@@ -481,9 +485,9 @@
           plen = exports.getPrompt().length;
         }
         exports.CursorTo(plen);
-      } else if (conproc !== false && (!conproc.kill && conproc.kill !== false) && key && key.ctrl === true && key.name === 'c' && thlib.settings.allowKill === true) {
+      } else if (conproc !== false && (!conproc.kill && conproc.kill !== false) && (key && key.ctrl === true && (key.name === 'c' || key.name === '\u0003')) && thlib.settings.allowKill === true) {
         // kill application (CTRL+C)
-        exports.Writeln("");
+        exports.Writeln(locale.app.kill);
         if (thlib.log.level === 2 || thlib.log.level === 3) {
           exports.log.Writeln(locale.log.AppKill, function () { process.exit(); });
         } else {

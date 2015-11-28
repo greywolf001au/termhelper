@@ -38,6 +38,7 @@ module.exports = {
   	show: 'show',                                   // Output module details
   	time: 'time',                                   // Output time to terminal
   	date: 'date',                                   // Output date to terminal
+  	clear: 'clear',                                 // Clear terminal
   },
   // The following options can be changed but requires you to change parts of the main code to match
   // These are provided here to keep the main code clean and for advanced users to change if required

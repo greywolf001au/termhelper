@@ -1,6 +1,6 @@
   Terminal Helper
 
-  Version: 0.2.2
+  Version: 0.2.3
 
   Author: Elijah Cowley
 
@@ -187,6 +187,7 @@ Line inputs processed from terminal
     Echo		Evaluate some JavaScript and echo the result
     Prompt		Change the terminal prompt
     Exit		Exits the application
+	Clear		Clears terminal (fix required for windows terminal)
 
   -----------------------------------------------------------------------------------------------
 

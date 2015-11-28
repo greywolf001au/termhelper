@@ -2,11 +2,33 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.2.3 Updates & Fixes
+
+1. Testing started on Windows10
+
+2. Added missing InvalidCommand locale variable and updated termhelper.js
+
+3. Added empty string check on Show method to fix false triggering
+
+4. Changed line processing to trigger on any line end character (cr/lf/crlf) to avoid issues when windows changes from crlf to cr *
+
+5. Added clear screen alias (not working in windows at this time)
+
+6. Added locale variables for application exit and kill (ctrl+c)
+
+7. Updated example.js
+
+Notes:
+
+* This no longer uses lineEndIn settings variable
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.2.2 Updates & Fixes
 
 1. Fixed typos
 
-2. Added missing comma (d'oh)
+2. Added missing comma
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
