@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.2.6
+	Version: 0.2.7
 	Release: Beta
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -19,7 +19,7 @@
   module.exports = {
     module: {
       name: "termhelper",
-      version: "0.2.6",
+      version: "0.2.7",
       author: "Elijah Cowley",
       website: "http://epcit.biz",
     },
@@ -451,6 +451,14 @@
 
     // listen for the "keypress" event
     process.stdin.on('keypress', function (ch, key) {
+      if (typeof(key) === 'undefined') {
+        key = { sequence: ch, name: ch }
+      }
+      if (key && key.hasOwnProperty('name') === false) {
+        key['name'] = '';
+        console.log(key);
+      }
+
       if (thlib.settings.processing == true) {
       if (key && key.sequence) { key.name = key.sequence; }
       if (key && key.sequence && key.sequence == '\u0003') { key.name = 'c'; }
