@@ -12,34 +12,34 @@
 (function () {
   "use strict";
 
-  var keypress = require('keypress'), thlib = require('./termhelper.lib.js'), util = require('util'), fs = require('fs'), exec = require('child_process').exec, app = {}, child, locale = require(thlib.settings.locale_path + '/' + thlib.settings.locale + '.lib.js');
+  var keypress = require('keypress'), thlib = require('./termhelper.conf.js'), util = require('util'), fs = require('fs'), exec = require('child_process').exec, app = {}, child, locale = require(thlib.settings.locale_path + '/' + thlib.settings.locale + '.lib.js'), readline = require('readline');
 
   keypress(process.stdin);
 
   module.exports = {
     module: {
       name: "termhelper",
-      version: "0.2.3",
+      version: "0.2.4",
       author: "Elijah Cowley",
       website: "http://epcit.biz",
     },
     lib: thlib,
-      events: {
+    events: {
         // default event declarations
         before_proc: function (ch, key) { return { ch: ch, key: key }; },
         keypress: function (ch, key) { return { ch: ch, key: key }; },
         line: function (data) { return false; }
       },
-      on: function (event, callback) {
+    on: function (event, callback) {
         // method to store events
         this.events[event] = callback;
       },
-      set: function (section, key, val) {
+    set: function (section, key, val) {
         // easily change settings
         var s = {};
         if (section) { s = section; }
         if (!section || section === null || section === '') { s = 'settings'; }
-        	
+
         if (!val && key === 'prompt') { val = ''; }
         if (val !== undefined) {
           if (s === 'locale') {
@@ -62,7 +62,7 @@
             }
         }
       },
-      getPrompt: function () {
+    getPrompt: function () {
         // create the prompt string
         var p = thlib.settings.prompt;
         var d = new Date();
@@ -79,42 +79,46 @@
         }
         return p;
       },
-      Prompt: function () {
-	    // display prompt in terminal
-	    var p = this.getPrompt();
-	    if (p && p !== null && p !== '') {
-	      process.stdout.write(p);
-	      thlib.input.cursor_pos += p.length;
-	    }
+    Prompt: function () {
+  	    // display prompt in terminal
+  	    var p = this.getPrompt();
+  	    if (p && p !== null && p !== '') {
+  	      process.stdout.write(p);
+  	      thlib.input.cursor_pos += p.length;
+  	    }
       },
-      CursorTo: function (pos) {
+    CursorTo: function (x, y=null) {
         // move the cursor to specified position
-        thlib.input.cursor_pos = pos;
-        process.stdout.cursorTo(pos);
+        thlib.input.cursor_pos = x;
+        //process.stdout.cursorTo(pos);
+        readline.cursorTo(process.stdout, x, y);
       },
-      CursorPos: function () {
+    CursorPos: function () {
         // return the current cursor position
         return thlib.input.cursor_pos;
       },
-      Clear: function (prompt) {
+    Clear: function (prompt) {
         // clear terminal screen
         process.stdout.write('\u001B[2J\u001B[0;0f');
+        if (thlib.settings.debug === true) {
+          this.writeln('Warning: This command has been deprecated, try using a lowercase letter at the beginning of the command instead.');
+        }
         if ((prompt && (prompt === null || prompt === true)) && thlib.settings.prompt !== null && thlib.settings.prompt !== '') { module.exports.Prompt(); }
       },
-      ClearLine: function () {
+    ClearLine: function () {
         // clear current line data
         process.stdout.clearLine();  // clear current text
         thlib.input.cursor_pos = 0;
         thlib.input.string = '';
       },
-      Write: function (text) {
+    Write: function (text) {
         // write a string to the terminal
         thlib.input.string = thlib.input.string + text;
         thlib.input.cursor_pos += text.length;
         process.stdout.write(text);
         if (thlib.log.level === 1 || thlib.log.level === 3) { exports.log.Write(text); }
       },
-      Writeln: function (text) {
+    Writeln: function (text) {
         // write a string to the terminal, append line end character and output prompt
         if (typeof(text) === 'string' || typeof(text) === 'number') {
           module.exports.Write(text + thlib.settings.lineEndOut);
@@ -130,7 +134,7 @@
         this.CursorTo(0);
         return false;
       },
-      Echo: function (text) {
+    Echo: function (text) {
         // write a string to the terminal, append line end character and output prompt
         if (typeof(text) === 'string' || typeof(text) === 'number') {
           this.Write(text + thlib.settings.lineEndOut);
@@ -163,30 +167,31 @@
         this.CursorTo(0);
         return '';
       },
-      Run: function (command) {
+    Run: function (command, echo=true, callback = function(err, data) { return data; }) {
         // execute a terminal command
         if (command.substr(command.length - 1, 1) === thlib.settings.lineEnd) { command = command.substr(0, command.length - 1); }
         child = exec(command, // command line argument directly in string
         function (error, stdout, stderr) {      // one easy function to capture data/errors
-          process.stdout.write(stdout);
+          if (echo === true) process.stdout.write(stdout);
           if (thlib.log.level === 1 || thlib.log.level === 3) {
             exports.log.Write(stdout);
             if (stdout.substr(stdout.length - 2) !== '\r\n' && stdout.substr(stdout.length - 2) !== '\n\r' && stdout.substr(stdout.length - 1) !== '\n' && stdout.substr(stdout.length - 1) !== '\r') {
               exports.log.Write(thlib.settings.lineEndOut);
             }
           }
-          if (stderr !== null && stderr !== '') {
+          if (echo === true && stderr !== null && stderr !== '') {
             process.stdout.write(stderr.split(':').splice(1, 2).join('').substr(1));
           }
-          if (error !== null) {
+          //if (echo === true && error !== null) {
             //process.stdout.write(error);
-          }
+          //}
           //thlib.input.cursor_pos = 0;
           thlib.input.string = '';
-          if (thlib.settings.prompt !== null && thlib.settings.prompt !== '') { module.exports.Prompt(); }
+          if (echo === true && thlib.settings.prompt !== null && thlib.settings.prompt !== '') { module.exports.Prompt(); }
+		      return callback(stderr, stdout);
         });
       },
-      Eval: function (data) {
+    Eval: function (data) {
         var res = '';
         try {
           res = eval(data);
@@ -196,64 +201,10 @@
         this.Writeln(res);
         if (thlib.log.level === 1 || thlib.log.level === 3) { exports.log.Writeln(res); }
       },
-      formatDate: function (format, splitter) {
-       	var f = thlib.settings.date_format, d = new Date(), s = '/', r = '';
-        if (format) { f = format; }
-        if (splitter) { s = splitter; }
-       	switch (f) {
-          case 1: r = (d.getMonth() + 1) + s + d.getDate() + s + d.getFullYear(); break
-          case 2: r = d.getFullYear() + s + (d.getMonth() + 1) + s + d.getDate(); break
-          default: r = d.getDate() + '-' + (d.getMonth() + 1) + s + d.getFullYear();
-        }
-        return r;
-      },
-      log: {
-        set: function (key, val) {
-          // change log settings
-          if (!val && key === 'path') { val = ''; }
-          if (val) {
-            thlib.log[key] = val;
-          } else {
-            var x;
-            for (x in key) {
-              if (key.hasOwnProperty(x)) {
-                thlib.log[x] = key[x];
-              }
-            }
-          }
-        },
-        Write: function (data, callback) {
-          // create variables
-          var path = thlib.log.path, d = new Date(), file = thlib.log.filename + exports.formatDate(thlib.log.date_format, thlib.log.date_splitter), prepend = d.toLocaleTimeString() + ": ";
-          // set empty path to current_dir/logs
-          if (path === '') { path = __dirname + '/logs'; }
-          // create non-existant path
-          fs.exists(path, function (exists) {
-            if (exists === false) { fs.mkdir(path, thlib.log.dir_mode); }
-          });
-          // append slash to path string
-          if (path.substr(path.length - 1, 1) !== '/') { path += '/'; }	
-          // add hour to path if hourly set
-          if (thlib.log.hourly === true) { file += '_' + d.getHours(); }
-          // append file extension
-          if (thlib.log.extension.substr(0, 1) !== '.') { file += '.'; }
-          if (thlib.log.extension && thlib.log.extension !== '') { file += thlib.log.extension; }
-       	  // append data to file
-       	  if (!thlib.log.timestamp || thlib.log.timestamp === false) { prepend = ''; }
-          fs.appendFile(path + file, prepend + data, function (err) {
-            if (err !== null && thlib.settings.error_level === 3) { throw err; }
-            // execute callback method
-            if (callback) { callback(); }
-          });
-        },
-        Writeln: function (data, callback) {
-          this.Write(data + thlib.settings.lineEndOut, callback);
-        }
-      },
-      Version: function () {
+    Version: function () {
         return this.module.version;
       },
-      Show: function (key) {
+    Show: function (key) {
         if (key === null) {
           return this.module;
         } else if (key === "") {
@@ -267,12 +218,234 @@
           return this.module[key];
         }
       },
-      StripLineEnd: function (str) {
+    StripLineEnd: function (str) {
         if (str.substr(str.length - thlib.settings.lineEndIn.length, thlib.settings.lineEndIn.length) === thlib.settings.lineEndIn) str = str.substr(0, str.length - thlib.settings.lineEndIn.length);
         if (str.substr(str.length - thlib.settings.lineEndOut.length, thlib.settings.lineEndOut.length) === thlib.settings.lineEndOut) str = str.substr(0, str.length - thlib.settings.lineEndOut.length);
         return str;
+      },
+    formatDate: function (format, splitter) {
+       	var f = thlib.settings.date_format, d = new Date(), s = '/', r = '';
+        if (format) { f = format; }
+        if (splitter) { s = splitter; }
+       	switch (f) {
+          case 1: r = (d.getMonth() + 1) + s + d.getDate() + s + d.getFullYear(); break
+          case 2: r = d.getFullYear() + s + (d.getMonth() + 1) + s + d.getDate(); break
+          default: r = d.getDate() + '-' + (d.getMonth() + 1) + s + d.getFullYear();
+        }
+        return r;
+      },
+    prompt: function () {
+  	    // display prompt in terminal
+  	    var p = this.getPrompt();
+  	    if (p && p !== null && p !== '') {
+  	      process.stdout.write(p);
+  	      thlib.input.cursor_pos += p.length;
+  	    }
+      },
+    cursorTo: function (x, y=null) {
+        // move the cursor to specified position
+        thlib.input.cursor_pos = x;
+        //process.stdout.cursorTo(pos);
+        readline.cursorTo(process.stdout, x, y);
+      },
+    cursorPos: function () {
+        // return the current cursor position
+        return thlib.input.cursor_pos;
+      },
+    clear: function (prompt) {
+        // clear terminal screen
+        process.stdout.write('\u001B[2J\u001B[0;0f');
+        if ((prompt && (prompt === null || prompt === true)) && thlib.settings.prompt !== null && thlib.settings.prompt !== '') { module.exports.Prompt(); }
+      },
+    clearLine: function () {
+        // clear current line data
+        process.stdout.clearLine();  // clear current text
+        thlib.input.cursor_pos = 0;
+        thlib.input.string = '';
+      },
+    write:  function (text) {
+        // write a string to the terminal
+        thlib.input.string = thlib.input.string + text;
+        thlib.input.cursor_pos += text.length;
+        process.stdout.write(text);
+        if (thlib.log.level === 1 || thlib.log.level === 3) { exports.log.Write(text); }
+      },
+    writeln: function (text) {
+        // write a string to the terminal, append line end character and output prompt
+        if (typeof(text) === 'string' || typeof(text) === 'number') {
+          module.exports.Write(text + thlib.settings.lineEndOut);
+        } else {
+          try {
+            // try to evaluate input text as JavaScript
+            this.Write(eval(text) + thlib.settings.lineEndOut);
+          } catch (ex) {
+            this.Write(text + thlib.settings.lineEndOut);
+          }
+        }
+        thlib.input.string = '';
+        this.CursorTo(0);
+        return false;
+      },
+    echo: function (text) {
+        // write a string to the terminal, append line end character and output prompt
+        if (typeof(text) === 'string' || typeof(text) === 'number') {
+          this.Write(text + thlib.settings.lineEndOut);
+        } else {
+          try {
+            // Output object as text
+            var out = '{' + thlib.settings.lineEndOut;
+            var t = '';
+            for (var x in text) {
+              t = text[x];
+              if (t === '\r') {
+                t = '\\r';
+              } else if (t === '\n') {
+                t = '\\n';
+              } else if (t === '\r\n') {
+                t = '\\r\\n';
+              } else if (t === '\n\r') {
+                t = '\\n\\r';
+              }
+              out += '\t' + x + ': ' + t + thlib.settings.lineEndOut;
+            }
+            out += '}' + thlib.settings.lineEndOut;
+            this.Write(out);
+          } catch (ex) {
+            this.Write(text + thlib.settings.lineEndOut);
+          }
+        }
+        //thlib.input.cursor_pos = 0;
+        thlib.input.string = '';
+        this.CursorTo(0);
+        return '';
+      },
+    run: function (command, echo=true, callback = function(err, data) { return data; }) {
+        // execute a terminal command
+        if (command.substr(command.length - 1, 1) === thlib.settings.lineEnd) { command = command.substr(0, command.length - 1); }
+        child = exec(command, // command line argument directly in string
+        function (error, stdout, stderr) {      // one easy function to capture data/errors
+          if (echo === true) process.stdout.write(stdout);
+          if (thlib.log.level === 1 || thlib.log.level === 3) {
+            exports.log.Write(stdout);
+            if (stdout.substr(stdout.length - 2) !== '\r\n' && stdout.substr(stdout.length - 2) !== '\n\r' && stdout.substr(stdout.length - 1) !== '\n' && stdout.substr(stdout.length - 1) !== '\r') {
+              exports.log.Write(thlib.settings.lineEndOut);
+            }
+          }
+          if (echo === true && stderr !== null && stderr !== '') {
+            process.stdout.write(stderr.split(':').splice(1, 2).join('').substr(1));
+          }
+          //if (echo === true && error !== null) {
+            //process.stdout.write(error);
+          //}
+          //thlib.input.cursor_pos = 0;
+          thlib.input.string = '';
+          if (echo === true && thlib.settings.prompt !== null && thlib.settings.prompt !== '') { module.exports.Prompt(); }
+		      return callback(stderr, stdout);
+        });
+      },
+    eval: function (data) {
+        var res = '';
+        try {
+          res = eval(data);
+        } catch (ex) {
+          res = data;
+        }
+        this.Writeln(res);
+        if (thlib.log.level === 1 || thlib.log.level === 3) { exports.log.Writeln(res); }
+      },
+    version: function () {
+      return this.module.version;
+    },
+    show: function (key) {
+        if (key === null) {
+          return this.module;
+        } else if (key === "") {
+          var r = "";
+          for (var x in this.module) {
+            r += x + ": " + this.module[x] + thlib.settings.lineEndOut;
+          }
+          r = r.substr(0, r.length - thlib.settings.lineEndOut.length);
+          return r;
+        } else {
+          return this.module[key];
+        }
+      },
+    stripLineEnd: function (str) {
+      if (str.substr(str.length - thlib.settings.lineEndIn.length, thlib.settings.lineEndIn.length) === thlib.settings.lineEndIn) str = str.substr(0, str.length - thlib.settings.lineEndIn.length);
+      if (str.substr(str.length - thlib.settings.lineEndOut.length, thlib.settings.lineEndOut.length) === thlib.settings.lineEndOut) str = str.substr(0, str.length - thlib.settings.lineEndOut.length);
+      return str;
+    },
+    log: {
+      set: function (key, val) {
+          // change log settings
+          if (!val && key === 'path') { val = ''; }
+          if (val) {
+            thlib.log[key] = val;
+          } else {
+            var x;
+            for (x in key) {
+              if (key.hasOwnProperty(x)) {
+                thlib.log[x] = key[x];
+              }
+            }
+          }
+        },
+      Write: function (data, callback) {
+          // create variables
+          var path = thlib.log.path, d = new Date(), file = thlib.log.filename + exports.formatDate(thlib.log.date_format, thlib.log.date_splitter), prepend = d.toLocaleTimeString() + ": ";
+          // set empty path to current_dir/logs
+          if (path === '') { path = __dirname + '/logs'; }
+          // create non-existant path
+          fs.exists(path, function (exists) {
+            if (exists === false) { fs.mkdir(path, thlib.log.dir_mode); }
+          });
+          // append slash to path string
+          if (path.substr(path.length - 1, 1) !== '/') { path += '/'; }
+          // add hour to path if hourly set
+          if (thlib.log.hourly === true) { file += '_' + d.getHours(); }
+          // append file extension
+          if (thlib.log.extension.substr(0, 1) !== '.') { file += '.'; }
+          if (thlib.log.extension && thlib.log.extension !== '') { file += thlib.log.extension; }
+       	  // append data to file
+       	  if (!thlib.log.timestamp || thlib.log.timestamp === false) { prepend = ''; }
+          fs.appendFile(path + file, prepend + data, function (err) {
+            if (err !== null && thlib.settings.error_level === 3) { throw err; }
+            // execute callback method
+            if (callback) { callback(); }
+          });
+        },
+      Writeln: function (data, callback) {
+          this.Write(data + thlib.settings.lineEndOut, callback);
+        },
+      write: function (data, callback) {
+          // create variables
+          var path = thlib.log.path, d = new Date(), file = thlib.log.filename + exports.formatDate(thlib.log.date_format, thlib.log.date_splitter), prepend = d.toLocaleTimeString() + ": ";
+          // set empty path to current_dir/logs
+          if (path === '') { path = __dirname + '/logs'; }
+          // create non-existant path
+          fs.exists(path, function (exists) {
+            if (exists === false) { fs.mkdir(path, thlib.log.dir_mode); }
+          });
+          // append slash to path string
+          if (path.substr(path.length - 1, 1) !== '/') { path += '/'; }
+          // add hour to path if hourly set
+          if (thlib.log.hourly === true) { file += '_' + d.getHours(); }
+          // append file extension
+          if (thlib.log.extension.substr(0, 1) !== '.') { file += '.'; }
+          if (thlib.log.extension && thlib.log.extension !== '') { file += thlib.log.extension; }
+       	  // append data to file
+       	  if (!thlib.log.timestamp || thlib.log.timestamp === false) { prepend = ''; }
+          fs.appendFile(path + file, prepend + data, function (err) {
+            if (err !== null && thlib.settings.error_level === 3) { throw err; }
+            // execute callback method
+            if (callback) { callback(); }
+          });
+        },
+      writeln: function (data, callback) {
+        this.Write(data + thlib.settings.lineEndOut, callback);
       }
-    };
+    }
+  };
 
     var exports = module.exports;
 
@@ -281,11 +454,15 @@
       if (thlib.settings.processing == true) {
       if (key && key.sequence) { key.name = key.sequence; }
       if (key && key.sequence && key.sequence == '\u0003') { key.name = 'c'; }
+      if (key && key.sequence && key.sequence == '\u001b[1~') { key.name = 'home'; }
+      if (key && key.sequence && key.sequence == '\u001b[4~') { key.name = 'end'; }
+
       var prompt = true;
 
       if (thlib.settings.debug === true) { console.log(key); }
       // call before process event handler
-      var conproc = exports.events.before_proc(ch, key), ostra = [], newstr = '', ostr = '';
+      var conproc = exports.events.before_proc(ch, key),
+          ostra = [], newstr = '', ostr = '';
       // run command processor providing false was not returned from before_proc event handler
       if (conproc !== false && (!conproc.enter && conproc.enter !== false) && key && (key.name === 'enter' || key.name === "\r" || key.name === "\n" || key.name === "\r\n")) {
         // process enter key
@@ -303,11 +480,11 @@
 
         if (thlib.settings.debug === true) { console.log(thlib.input.string); } // output debug message
         if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln(thlib.input.string); }
-			
+
         if (thlib.settings.appendEndChar === true) { thlib.input.string += thlib.settings.lineEndOut; } // append line end character from settings
         process.stdout.write(thlib.settings.lineEndOut); // output line end character to terminal
         exports.CursorTo(0); // set cursor position to 0
-            
+
         if (thlib.settings.allowRun === true && thlib.input.string.substr(0, thlib.alias.run.length) === thlib.alias.run) {
           // execute command in terminal
           prompt = false;
@@ -328,13 +505,13 @@
           if (cmd.substr(0, 1) === ' ') { cmd = cmd.substr(1); }
           exports.set('settings', 'prompt', cmd);
         } else if (thlib.input.string != "" && thlib.input.string.substr(0, thlib.alias.show.length) === thlib.alias.show) {
-			// show settings alias
+			    // show settings alias
           var cmd = thlib.input.string;
           cmd = exports.StripLineEnd(cmd);
           if (cmd.length > thlib.alias.show.length) {
             cmd = cmd.substr(thlib.alias.show.length + 1);
           } else {
-            cmd = cmd.substr(thlib.alias.show.length);            
+            cmd = cmd.substr(thlib.alias.show.length);
           }
           if (cmd === "") {
             exports.Writeln(exports.Show(""));
@@ -344,7 +521,7 @@
         } else if (thlib.input.string.substr(0, thlib.alias.exit.length) === thlib.alias.exit) {
           // exit application
           prompt = false;
-		  exports.Writeln(locale.app.exit);
+		      exports.Writeln(locale.app.exit);
           if (thlib.log.level === 2 || thlib.log.level === 3) { exports.log.Writeln(locale.log.AppExit, function () { process.exit(); }); }
         } else if (thlib.input.string.substr(0, thlib.alias.version.length) === thlib.alias.version) {
           exports.Writeln(exports.Version());
@@ -355,7 +532,13 @@
           var d = new Date();
           exports.Writeln(exports.formatDate(thlib.settings.date_format, thlib.settings.date_splitter));
         } else if (thlib.input.string.substr(0, thlib.alias.clear.length) === thlib.alias.clear) {
-          process.stdout.Clear();
+          try {
+		          //process.stdout.Clear();
+		          //process.stdout.write('\033c');
+              process.stdout.write('\x1b[2J\x1b[1;1H');
+		      } catch (ex) {
+			         console.log(ex);
+		      }
         } else if ((thlib.input.string === thlib.settings.lineEndIn || thlib.input.string === "" || thlib.input.string === thlib.settings.lineEndOut) && thlib.settings.proc_blank_line === true) {
           // don't do anything if the user presses enter without any command (if prompt is set on display a new prompt)
         } else {
@@ -367,14 +550,14 @@
           var r = exports.events.line(cmd);
           //console.log(r);        if (prompt !== false) { exports.Prompt(); } else { exports.CursorTo(0); } // set cursor position to 0
 
-    	  if ((typeof(r) === 'boolean' && r === false) || (typeof(r) === 'object' && typeof(r.valid) === 'boolean' && (r.valid === false || r.valid === 'false'))) {
+    	    if ((typeof(r) === 'boolean' && r === false) || (typeof(r) === 'object' && typeof(r.valid) === 'boolean' && (r.valid === false || r.valid === 'false'))) {
             //var cmd = thlib.input.string;
             cmd = exports.StripLineEnd(cmd);
             exports.Writeln(locale.cmd.InvalidCommand + ' [' + cmd + ']');
-    	  }
-    	  if (typeof(r) === 'object' && typeof(r.prompt) === 'boolean' && r.prompt === false) {
-    	    prompt = false;
-    	  } else {
+    	    }
+    	    if (typeof(r) === 'object' && typeof(r.prompt) === 'boolean' && r.prompt === false) {
+    	       prompt = false;
+    	    } else {
             prompt = true;
           }
         }
@@ -430,7 +613,7 @@
         }
         if (thlib.input.cursor_pos < (thlib.input.string.length + plen)) { thlib.input.cursor_pos += 1; }
         process.stdout.cursorTo(thlib.input.cursor_pos);
-      } else if (conproc !== false && (!conproc.backspace && conproc.backspace !== false) && key && (key.name === 'backspace' || key.name === '')) {
+      } else if (conproc !== false && (!conproc.backspace && conproc.backspace !== false) && key && (key.name === 'backspace' || key.name === '' || key.name === '\b')) {
         // delete the character behind the cursor from line input
         var plen = 0;
         var p = exports.getPrompt();
@@ -473,23 +656,19 @@
           if (thlib.settings.echoKeys === true) { process.stdout.write(thlib.input.string); }
           process.stdout.cursorTo(thlib.input.cursor_pos);
         }
-      } else if (conproc !== false && (!conproc.end && conproc.end !== false) && key && (key.name === 'end' || key.name === "\u001bOF")) {
+      } else if (conproc !== false && (!conproc.end && conproc.end !== false) && (key && key.name === 'end' || key.name === "\u001bOF" || key.name === "\u001b[4~]")) {
         var plen = 0;
-        if (thlib.settings.prompt !== null && thlib.settings.prompt !== '') {
-          plen = exports.getPrompt().length;
-        }
-        exports.CursorTo(thlib.input.string.length + plen);
-      } else if (conproc !== false && (!conproc.home && conproc.home !== false) && key && (key.name === 'home' || key.name === "\u001bOH")) {
+        if (thlib.settings.prompt !== null && thlib.settings.prompt !== '') plen = exports.getPrompt().length;
+        exports.cursorTo(thlib.input.string.length + plen);
+      } else if (conproc !== false && (!conproc.home && conproc.home !== false) && (key && key.name === 'home' || key.name === "\u001bOH" || key.name === "\u001b[1~]")) {
         var plen = 0;
-        if (thlib.settings.prompt !== null && thlib.settings.prompt !== '') {
-          plen = exports.getPrompt().length;
-        }
-        exports.CursorTo(plen);
+        if (thlib.settings.prompt !== null && thlib.settings.prompt !== '')  plen = exports.getPrompt().length;
+        exports.cursorTo(plen);
       } else if (conproc !== false && (!conproc.kill && conproc.kill !== false) && (key && key.ctrl === true && (key.name === 'c' || key.name === '\u0003')) && thlib.settings.allowKill === true) {
         // kill application (CTRL+C)
-        exports.Writeln(locale.app.kill);
+        exports.writeln(locale.app.kill);
         if (thlib.log.level === 2 || thlib.log.level === 3) {
-          exports.log.Writeln(locale.log.AppKill, function () { process.exit(); });
+          exports.log.writeln(locale.log.AppKill, function () { process.exit(); });
         } else {
           process.exit();
         }
@@ -516,7 +695,7 @@
           process.stdout.cursorTo(thlib.input.cursor_pos);
         }
       }
-        
+
       // process keypress events
       conproc = exports.events.keypress(ch, key);
       }

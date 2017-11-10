@@ -2,6 +2,23 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 0.2.4 Updates & Fixes
+
+1. Changed clear window method to use a control code instead of an octal literal (tested on Win10)
+
+2. Add echo and callback parameters to Run method allowing output to be optional, the callback method runs on completion (callback
+   passes the parameters err and data which contain the command error and output data accordingly).
+
+3. Added return data for the run method, run now returns the callback method return data or the command output if a callback is not specified
+
+4. Renamed termhelper.lib.js to termhelper.conf.js (for easier understanding)
+
+5. Added methods using the standard naming convention ie. term.Run can be called with term.run (note: capitalised names are now deprecated and will be removed in future releases)
+
+6. Added recognition of control codes for home and end keys (all tested and working properly now)
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 0.2.3 Updates & Fixes
 
 1. Testing started on Windows10
