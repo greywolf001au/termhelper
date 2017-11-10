@@ -1,6 +1,6 @@
   Terminal Helper
 
-  Version: 0.2.7
+  Version: 0.2.8
 
   Author: Elijah Cowley
 

@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 0.2.7
+	Version: 0.2.8
 	Release: Beta
 	Website: http://epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -19,7 +19,7 @@
   module.exports = {
     module: {
       name: "termhelper",
-      version: "0.2.7",
+      version: "0.2.8",
       author: "Elijah Cowley",
       website: "http://epcit.biz",
     },
@@ -397,7 +397,10 @@
           if (path === '') { path = __dirname + '/logs'; }
           // create non-existant path
           fs.exists(path, function (exists) {
-            if (exists === false) { fs.mkdir(path, thlib.log.dir_mode); }
+            try {
+              if (exists === false) { fs.mkdir(path, thlib.log.dir_mode); }
+            } catch (ex) {
+            }
           });
           // append slash to path string
           if (path.substr(path.length - 1, 1) !== '/') { path += '/'; }
