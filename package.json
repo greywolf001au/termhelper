@@ -27,7 +27,7 @@
     "keypress": ">= 0.1.0"
   },
   "readmeFilename": "README.md",
-  "_id": "termhelper@0.2.3",
+  "_id": "termhelper@0.2.6",
   "dist": {
     "shasum": "88248f83bef5f026b95da8ad533c0b3b29335c22"
   },

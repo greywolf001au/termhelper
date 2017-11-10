@@ -2,7 +2,13 @@ Terminal Helper Version Edits
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
-Version 0.2.4 Updates & Fixes
+Version 0.2.6 Updates & Fixes
+
+1. Fix version information
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Version 0.2.5 Updates & Fixes
 
 1. Changed clear window method to use a control code instead of an octal literal (tested on Win10)
 
@@ -16,6 +22,12 @@ Version 0.2.4 Updates & Fixes
 5. Added methods using the standard naming convention ie. term.Run can be called with term.run (note: capitalised names are now deprecated and will be removed in future releases)
 
 6. Added recognition of control codes for home and end keys (all tested and working properly now)
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Version 0.2.4 Updates & Fixes
+
+1. Various fixes (catch up required, only applied to NPM repo)
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 

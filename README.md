@@ -1,6 +1,6 @@
   Terminal Helper
 
-  Version: 0.2.3
+  Version: 0.2.6
 
   Author: Elijah Cowley
 
@@ -13,7 +13,7 @@ I have also included basic processing of arrow keys and backspace.
 Tested on Debian Linux, please contact me via email [ ecowley@epcit.biz ] or using GitHub [ https://github.com/greywolf001au/termhelper ] to report any bugs or get help using this modules.
 
   -----------------------------------------------------------------------------------------------
-  
+
 ** Install
 
 Install this module using NPM or copy the package to your applications '/node_modules' directory.
@@ -21,7 +21,7 @@ Install this module using NPM or copy the package to your applications '/node_mo
     npm install termhelper
 
   -----------------------------------------------------------------------------------------------
-  
+
 ** Useage
 
 In the application files you would like to use this module add the following line:
@@ -29,7 +29,7 @@ In the application files you would like to use this module add the following lin
     var term = require('termhelper')
 
   -----------------------------------------------------------------------------------------------
-  
+
 ** Settings
 
 The settings can be changed in termhelper.lib.js
@@ -70,12 +70,12 @@ Available Settings:
       alias          prompt            'prompt'             Change the terminal prompt command
       alias          version           'version'            Change the terminal version command
       alias          show              'show'               Change the terminal show command
-      
-      
+
+
 
 Settings can be modified in the following manner:
     term.set(section, key, value)
-	
+
 Where 'section' refers to the section key, current sections are: settings, log, alias & locale
 If a section is null the default section of 'settings' will be used.
 Key refers to the settings key to change, key may be an object of key/value pairs.
@@ -86,7 +86,7 @@ Value is the new value for the setting.
     term.set('settings', 'prompt', 'node.js> ');
 
   or
-    
+
     term.set(null, {
       prompt: 'node.js> ',
       debug: true
@@ -94,7 +94,7 @@ Value is the new value for the setting.
 
 Note:
 	To have no prompt displayed set the prompt to a blank string.
-	
+
 
   -----------------------------------------------------------------------------------------------
 
@@ -122,7 +122,7 @@ Events can be set for a single keypress and on line data using the following:
     term.on('before_proc', function(ch, key) {
       Add your code here....
     }
-    
+
     term.on('keypress', function(ch, key) {
       Add your code here....
     }
@@ -168,14 +168,14 @@ Several methods have been added to make working in the terminal easier
     CursorTo         term.CursorTo(pos)      Move the cursor to a specified position on the line
     Run              term.Run(command)       Run shell commands from your node apps
     Eval             term.Eval(command)      Evaluate string as JavaScript
-    Echo             term.Echo(obj)          Parse an object and output to cli 
+    Echo             term.Echo(obj)          Parse an object and output to cli
     log.set          term.log.set()          Set log options
     log.Write        term.log.Write(data)    Write data to log file
     log.Writeln      term.log.Writeln(data)  Write data to log and move to next line
     Version          term.Version()          Return termhelper version number
     Show             term.Show(key)          Return termhelper information (key denotes which peice of information to show e.g name, version etc)
     formatDate       term.formatDate(f, s)   Return the date with the format 'f' using the splitter 's'
-    
+
 
   -----------------------------------------------------------------------------------------------
 
@@ -204,9 +204,9 @@ You may also use the following notation to insert information to the prompt stri
     %v		Termhelper version number
     %!		The command history position number (changes when cycling through history)
     %#		The history length (command number)
-    
+
 Examples:
-    
+
 In termhelper.lib.js:
 
     settings: {
@@ -217,7 +217,7 @@ In termhelper.lib.js:
 In your application:
 
     term.set("settings", "prompt", "[%d]%p> ");
-    
+
 On the command line:
 
     prompt __dirname + '> ';
@@ -225,7 +225,7 @@ On the command line:
 Note: The values set in these examples could be set using any of the prompt methods.
 
   -----------------------------------------------------------------------------------------------
-  
+
 ** App object
 
 A blank object called app has been added to store custom variables for displaying in a prompt or other evaluated commands.
@@ -247,5 +247,3 @@ Contains details about the termhelper module for use with evaluated methods and 
 Colors: this module will allow terminal colors and styles however this library extends the String prototype. While it works quite nicely it is not the prefered method.
 
   -----------------------------------------------------------------------------------------------
-
-
