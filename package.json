@@ -27,10 +27,10 @@
     "keypress": ">= 0.1.0"
   },
   "readmeFilename": "README.md",
-  "_id": "termhelper@0.2.8",
+  "_id": "termhelper@0.2.9",
   "dist": {
     "shasum": "88248f83bef5f026b95da8ad533c0b3b29335c22"
   },
   "_from": "termhelper@",
-  "_resolved": "https://registry.npmjs.org/termhelper/-/termhelper-0.1.1.tgz"
+  "_resolved": "https://registry.npmjs.org/termhelper/-/termhelper-0.2.9.tgz"
 }
