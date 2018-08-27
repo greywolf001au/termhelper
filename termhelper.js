@@ -2,9 +2,9 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 1.0.0
+	Version: 1.0.1
 	Release: Beta
-	Website: http://shop.epcit.biz
+	Website: http://au.epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
 
 */
@@ -13,9 +13,9 @@
     "use strict";
 
     const __NAME = "termhelper";
-    const __VERSION = "1.0.0";
+    const __VERSION = "1.0.1";
     const __AUTHOR = "Elijah Cowley";
-    const __WEBSITE = "https://shop.epcit.biz";
+    const __WEBSITE = "https://au.epcit.biz";
 
     const { Duplex } = require('stream');
     var session_key = Math.floor(Math.random() * 10000);
