@@ -16,8 +16,10 @@ term.set(null, {
 	locale: 'default',
 });
 */
+term.set(null, 'conf_path', './example.conf.js');
 
 // settings used for testing on windows10
+/*
 term.set(null, {
 	debug: false, // toggle this to display key information when each key is pressed
 	prompt: "this.app.name + '> '", // set prompt to the name variable set in the app object
@@ -27,7 +29,7 @@ term.set(null, {
     echoKeys: true, // echo the users key strokes
     use_xconsole: true // hijack the console for cleaner console.log calls
 });
-
+*/
 // change the alias for the exit command to close (typing exit will no longer work)
 term.set('alias', 'exit', 'close');
 // set the run alias to null preventing the command from being run

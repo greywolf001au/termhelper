@@ -1,6 +1,12 @@
 Terminal Helper Version Edits
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
+Version 1.1.0 Updates & Fixes
+
+1. Add conf_path variable to set method allowing loading from external config file.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
 Version 1.0.1 Updates & Fixes
 
 1. Change package.json to try to resolve error when using NPM update

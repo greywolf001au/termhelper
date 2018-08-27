@@ -2,7 +2,7 @@
 
 	Terminal Helper by EPCIT
 	Author: Elijah cowley
-	Version: 1.0.1
+	Version: 1.1.0
 	Release: Beta
 	Website: http://au.epcit.biz
 	GitHub: https://github.com/greywolf001au/termhelper.git
@@ -13,7 +13,7 @@
     "use strict";
 
     const __NAME = "termhelper";
-    const __VERSION = "1.0.1";
+    const __VERSION = "1.1.0";
     const __AUTHOR = "Elijah Cowley";
     const __WEBSITE = "https://au.epcit.biz";
 
@@ -39,7 +39,7 @@
           author: __AUTHOR,
           website: __WEBSITE,
         },
-        console: 'none',
+        console: 'default',
         Choice: thChoice,
         KEY: 0,
         LINE: 1,
@@ -64,36 +64,45 @@
             // easily change settings
             var s = {};
             if (section) { s = section; }
-            /*
-            if (!section || section === null || section === '' && isString(key) === false) {
-                for (var x in key) {
-                    if (thlib.hasOwnProperty(x) === true) thlib[x] = key[x];
-                }
-                return true;
-            }
-            */
             if (!section || section === null || section === '') { s = 'settings'; }
-
-            if (!val && key === 'prompt') { val = ''; }
-            if (val !== null) {
-              if (s === 'locale') {
-                locale[key] = val;
-              } else {
-                thlib[s][key] = val;
-                if (key === 'locale') { locale = require(thlib.settings.locale_path + '/' + thlib.settings.locale + '.lib.js'); }
-              }
-            } else {
-                var x;
-                for (x in key) {
-                  if (key.hasOwnProperty(x)) {
-                    if (s === 'locale') {
-                      locale[x] = key[x];
-                    } else {
-                      thlib[s][x] = key[x];
-                      if (x === 'locale') { locale = require(thlib.settings.locale_path + '/' + thlib.settings.locale + '.lib.js'); }
-                      if (s === 'settings' && x === 'hijack_console') xconsole.hijack(key[x]);
+            if (s === 'settings' && key === 'conf_path') {
+                if (val !== null && fs.existsSync(val)) {
+                    try {
+                        var temp_conf = require(val);
+                        for (var x in temp_conf) {
+                            for (var k in temp_conf[x]) {
+                                if (thlib.hasOwnProperty(x) && thlib[x].hasOwnProperty(k)) {
+                                    thlib[x][k] = temp_conf[x][k];
+                                }
+                            }
+                        }
+                    } catch (ex) {
+                        term.writeln('Error loading configuration file: ' + ex);
                     }
-                  }
+                }
+            } else {
+
+                if (!val && key === 'prompt') { val = ''; }
+                if (val !== null) {
+                    if (s === 'locale') {
+                        locale[key] = val;
+                    } else {
+                        thlib[s][key] = val;
+                        if (key === 'locale') { locale = require(thlib.settings.locale_path + '/' + thlib.settings.locale + '.lib.js'); }
+                    }
+                } else {
+                    var x;
+                    for (x in key) {
+                        if (key.hasOwnProperty(x)) {
+                            if (s === 'locale') {
+                                locale[x] = key[x];
+                            } else {
+                                thlib[s][x] = key[x];
+                                if (x === 'locale') { locale = require(thlib.settings.locale_path + '/' + thlib.settings.locale + '.lib.js'); }
+                                if (s === 'settings' && x === 'use_xconsole') xconsole.hijack(key[x]);
+                            }
+                        }
+                    }
                 }
             }
         },

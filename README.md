@@ -39,23 +39,23 @@ Available Settings:
     ---------------------------------------------------------------------------------------------------
     | Section: settings
     ---------------------------------------------------------------------------------------------------
-    echoKeys		        true                 Outputs key on key stroke
-    prompt					'> '                 Sets the prompt string
-    termHistory			    true                 Keep command history
-    allowKill				true                 Allow CTRL + C to kill app
-    lineEndOut				'\n'                 Line end charater to output
-    lineEndIn				'\n'                 Line end charater to capture from input
-    appendEndChar			true                 Append lineEnd character to event data
-    debug					false                Outputs keystroke data
-    allowRun				true                 Allow running of shell commands
-    date_format				0                    Sets the format to use for dates
-    date_splitter			'-'                  Sets the default date splitter (for prompt)
-    locale					'default'            Sets the language locale (See locale folder for supported locale files, currently supports 'default' only)
-    locale_path				'./locale'           Sets the path to the locale file (without trailing slash)
-    processing				true                 Turns on or off key and line processing (false will stop all commands from being processed)
-    proc_blank_line			true                 Turn on or off the default processing of a blank line
-	use_old_stdin_stream	false				 Use old stdin processing stream for keypress module (set to true if you are using an older version of keypress)
-	exit					0					 Override an exit value or inject a method (see notes below for options)
+    echoKeys                true                 Outputs key on key stroke
+    prompt                  '> '                 Sets the prompt string
+    termHistory             true                 Keep command history
+    allowKill               true                 Allow CTRL + C to kill app
+    lineEndOut              '\n'                 Line end charater to output
+    lineEndIn               '\n'                 Line end charater to capture from input
+    appendEndChar           true                 Append lineEnd character to event data
+    debug                   false                Outputs keystroke data
+    allowRun                true                 Allow running of shell commands
+    date_format             0                    Sets the format to use for dates
+    date_splitter           '-'                  Sets the default date splitter (for prompt)
+    locale                  'default'            Sets the language locale (See locale folder for supported locale files, currently supports 'default' only)
+    locale_path             './locale'           Sets the path to the locale file (without trailing slash)
+    processing              true                 Turns on or off key and line processing (false will stop all commands from being processed)
+    proc_blank_line         true                 Turn on or off the default processing of a blank line
+	use_old_stdin_stream    false                Use old stdin processing stream for keypress module (set to true if you are using an older version of keypress)
+	exit                    0                    Override an exit value or inject a method (see notes below for options)
     ---------------------------------------------------------------------------------------------------
     | Section: log
     ---------------------------------------------------------------------------------------------------  
@@ -86,19 +86,19 @@ Available Settings:
     ===================================================================================================
 
     ---------------------------------------------------------------------------------------------------
-    | Result        |  Identifier    |      Default Value
+    | Result        |  Identifier    |     Default Value
     ---------------------------------------------------------------------------------------------------
 	| Section: globalVars
     ---------------------------------------------------------------------------------------------------
-	Date			  '%d'					'exports.formatDate(thlib.settings.date_format, thlib.settings.date_splitter)'
-    Current Path	  '%p'					'__dirname'
-    Locale Time		  '%t'					'd.toLocaleTimeString()'
-    History Position  '%@'					'thlib.input.history_position'
-    History Length    '%#'					'thlib.input.history.length'
-    Version			  '%v'					'exports.version()'
-    Unix Time		  '%u'					'd.getUnixTime()'
-    Uptime			  '%uptime'				'exports.counterFormat(exports.uptime()).toString()'
-    Start Clock		  '%*'					''
+	Date              '%d'                 'exports.formatDate(thlib.settings.date_format, thlib.settings.date_splitter)'
+    Current Path      '%p'                 '__dirname'
+    Locale Time       '%t'                 'd.toLocaleTimeString()'
+    History Position  '%@'                 'thlib.input.history_position'
+    History Length    '%#'                 'thlib.input.history.length'
+    Version           '%v'                 'exports.version()'
+    Unix Time         '%u'                 'd.getUnixTime()'
+    Uptime            '%uptime'            'exports.counterFormat(exports.uptime()).toString()'
+    Start Clock       '%*'                 ''
 
     ---------------------------------------------------------------------------------------------------
 	| Section: input
@@ -133,7 +133,8 @@ Value is the new value for the setting.
     });
 
 Notes:
-	To have no prompt displayed set the prompt to a blank string.
+    To load a configuration file use term.set('settings', 'conf_path', '/path/to/my/conf') to load a configuration file (will not be read from config file to save recursive loads ocurring).
+	To have no prompt displayed set the prompt to a blank string or null.
 
 	The exit setting can be a string overriding the exit message by passing a string, the exit code if a number is given, a function to call prior to exiting the application or
 	the following object:

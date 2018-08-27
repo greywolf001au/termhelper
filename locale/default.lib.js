@@ -7,7 +7,8 @@ module.exports = {
         InvalidCommand: "Invalid command",
         Uptime: "Uptime: "
 	},
-	app: {
+    app: {
+        configError: 'Error loading configuration file - ',
 		exit: "Application exited",
 		kill: "Application killed"
 	}
