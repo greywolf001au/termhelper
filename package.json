@@ -1,6 +1,6 @@
 {
   "name": "termhelper",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Allow processing of key press events and strings on enter key. Log input and output. Execute terminal commands and more.",
   "author": {
     "name": "Elijah Cowley",
