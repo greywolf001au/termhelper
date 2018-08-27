@@ -1,4 +1,29 @@
 Terminal Helper Version Edits
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Version 1.0.0 Updates & Fixes
+
+1. Add choice methods and class
+
+2. Add STDIN, STDOUT & STDERR hooks
+
+3. Add xconsole class to override default console.log behaviour
+
+4. Move terminal commands to own file for easy adding/editing
+
+5. Fix reverse typing on null/empty prompt string
+
+6. Add fixes for cursor positioning
+
+7. Fix command alias lookup issues
+
+8. Add exit method (allows to add method for app cleanup)
+
+9. General code cleanup
+
+10. Fix example.js and add choice example
+
+11. Add extra commands for Date, Time, Uptime etc
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 

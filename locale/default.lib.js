@@ -4,7 +4,8 @@ module.exports = {
 		AppKill: "Application killed"
 	},
 	cmd: {
-		InvalidCommand: "Invalid command"
+        InvalidCommand: "Invalid command",
+        Uptime: "Uptime: "
 	},
 	app: {
 		exit: "Application exited",
