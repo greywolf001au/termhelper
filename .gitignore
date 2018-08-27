@@ -6,13 +6,15 @@ lib-cov
 *.out
 *.pid
 *.gz
+*.njsproj
 *~
 pids
 logs
 results
+.vs/*
+
 
 npm-debug.log
-
 app.js
 testing.js
 th_screen.js
